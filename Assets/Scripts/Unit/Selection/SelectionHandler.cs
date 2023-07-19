@@ -132,7 +132,7 @@ public class SelectionHandler : MonoBehaviour
     private void SingleSelection(bool clear)
     {
         var ray = unitManager.cam.ScreenPointToRay(_selectionLastPos);
-        if (Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity))
+        if (Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity,unitManager.teamModel.everything))
         {
             if (hit.transform.TryGetComponent(out Unit unit)) unitManager.AddOneUnit(clear,unit);
             else
