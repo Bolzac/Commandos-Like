@@ -13,4 +13,8 @@ public class UnitModel : MonoBehaviour
     public float walkingSpeed;
     public float crouchSpeed;
     public float runningSpeed;
+
+    public string unitLockedAnim;
+    public string unitOpenAnim;
+    public string unitCloseAnim;
 }

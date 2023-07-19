@@ -42,7 +42,8 @@ public class SelectionHandler : MonoBehaviour
     public LayerMask unitLayer;
     
     #endregion
-    
+
+    private Coroutine _coroutine;
     private bool _isStarted;
 
     private void Awake()
@@ -52,6 +53,8 @@ public class SelectionHandler : MonoBehaviour
 
     private void Update()
     {
+        if(DialogueManager.instance.DialogueIsPlaying) return;
+
         if (Input.GetMouseButtonUp(0))
         {
             unitManager.teamController.DisableRunning();
@@ -61,7 +64,9 @@ public class SelectionHandler : MonoBehaviour
     }
 
     private void LateUpdate()
-    { 
+    {
+        if(DialogueManager.instance.DialogueIsPlaying) return;
+        
         if (Input.GetMouseButtonDown(0))
         {
             _selectionStartPos = Input.mousePosition;
@@ -135,9 +140,12 @@ public class SelectionHandler : MonoBehaviour
                 switch (hit.transform.tag)
                 {
                     case "Ground":
+                        if(_coroutine != null) StopCoroutine(_coroutine);
                         unitManager.teamController.AssignDestinations(hit.point);
                         break;
                     case "Interaction":
+                        var interact = hit.transform.GetComponent<IInteraction>();
+                        _coroutine = StartCoroutine(unitManager.selectedUnits[0].controller.Interaction(interact));
                         break;
                     default:
                         break;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class UnitController : MonoBehaviour
@@ -30,6 +31,17 @@ public class UnitController : MonoBehaviour
         if (unit.model.isRunning) unit.agent.speed = unit.model.runningSpeed;
         else unit.agent.speed = unit.model.isCrouching ? unit.model.crouchSpeed : unit.model.walkingSpeed;
         unit.agent.SetDestination(destination);
+    }
+
+    public IEnumerator Interaction(IInteraction interaction)
+    {
+        Debug.Log("a");
+        Move(interaction.animationTransform.position);
+        yield return new WaitForSeconds(0.1f);
+        yield return new WaitUntil((() => !unit.agent.hasPath));
+        transform.forward = interaction.animationTransform.forward;
+        if(unit.model.isCrouching) StandUp();
+        interaction.Interaction();
     }
 
     public void Crouch()

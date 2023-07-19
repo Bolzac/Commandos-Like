@@ -4,10 +4,8 @@ using UnityEngine.AI;
 public class Unit : MonoBehaviour
 {
     public UnitManager unitManager;
-    public InputHandler inputHandler;
     public NavMeshAgent agent;
     public AnimationHandler animationHandler;
-    public UnitStateManager stateMachine;
     public UnitModel model;
     public UnitController controller;
 
@@ -19,19 +17,13 @@ public class Unit : MonoBehaviour
         controller = GetComponent<UnitController>();
     }
 
-    private void Start()
-    {
-        stateMachine = GetComponent<UnitStateManager>();
-    }
-
     private void Update()
     {
         animationHandler.SetPatrolBlend(agent.velocity.magnitude);
     }
 
-    public void Init(UnitManager manager,InputHandler input)
+    public void Init(UnitManager manager)
     {
         unitManager = manager;
-        inputHandler = input;
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class UnitManager : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class UnitManager : MonoBehaviour
     public InputHandler inputHandler;
     public TeamController teamController;
     public TeamModel teamModel;
-    
+
     public Unit[] units;
     public List<Unit> selectedUnits;
 
@@ -19,7 +20,7 @@ public class UnitManager : MonoBehaviour
         AddOneUnit(false,units[0]);
         foreach (var unit in units)
         {
-            unit.Init(this,inputHandler);
+            unit.Init(this);
         }
     }
 
