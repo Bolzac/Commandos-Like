@@ -13,6 +13,7 @@ public class InputHandler : MonoBehaviour
     public float vertical;
     
     public UnityEvent toggleCrouchEvent;
+    public UnityEvent<InputHandler> togglePauseEvent;
     private void Awake()
     {
         _inputs = new PlayerInputs();
@@ -39,6 +40,7 @@ public class InputHandler : MonoBehaviour
         #endregion
 
         _inputs.Actions.Crouch.performed += i => toggleCrouchEvent.Invoke();
+        _inputs.Actions.Pause.performed += i => togglePauseEvent.Invoke(this);
     }
 
     private void OnDisable()

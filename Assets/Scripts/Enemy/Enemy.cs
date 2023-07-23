@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class Enemy : IInteraction
 {
     public Camera cam;
     public AnimationHandler animationHandler;
@@ -30,5 +30,10 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         animationHandler.SetPatrolBlend(agent.velocity.magnitude);
+    }
+
+    public override void Interaction()
+    {
+        controller.Die();
     }
 }

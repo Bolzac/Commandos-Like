@@ -35,13 +35,25 @@ public class UnitController : MonoBehaviour
 
     public IEnumerator Interaction(IInteraction interaction)
     {
-        Debug.Log("a");
-        Move(interaction.animationTransform.position);
-        yield return new WaitForSeconds(0.1f);
-        yield return new WaitUntil((() => !unit.agent.hasPath));
-        transform.forward = interaction.animationTransform.forward;
+        Move(interaction.transform.position);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitUntil(() => interaction.distanceThreshold >= unit.agent.remainingDistance);
+        unit.agent.ResetPath();
         if(unit.model.isCrouching) StandUp();
+        DetectInteractionAnim(interaction);
         interaction.Interaction();
+    }
+
+    private void DetectInteractionAnim(IInteraction interaction)
+    {
+        switch (interaction.tag)
+        {
+            case "Enemy" :
+                //unit.animationHandler.PlayTargetAnim("Stealth Assassination",0.25f);
+                break;
+            default:
+                break;
+        }
     }
 
     public void Crouch()

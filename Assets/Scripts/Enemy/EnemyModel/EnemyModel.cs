@@ -5,6 +5,7 @@ using UnityEngine.Serialization;
 public class EnemyModel : MonoBehaviour
 {
     public EnemyType enemyType;
+    public CapsuleCollider capsuleCollider;
 
     public Transform eye;
 

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1659dea5a85942cdb0b28c658607aece, type: 3}
+  m_Name: Harum
+  m_EditorClassIdentifier: 
+  unitName: Harum
+  unitDescription: 
+  portrait: {fileID: 21300000, guid: ee8c48016f9ef55409b04964e0bab558, type: 3}

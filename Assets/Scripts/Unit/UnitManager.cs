@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class UnitManager : MonoBehaviour
 {
@@ -17,14 +16,14 @@ public class UnitManager : MonoBehaviour
         teamModel = GetComponent<TeamModel>();
         teamController = GetComponent<TeamController>();
         units = transform.GetComponentsInChildren<Unit>();
-        AddOneUnit(false,units[0]);
+        AddUnit(false,units[0]);
         foreach (var unit in units)
         {
             unit.Init(this);
         }
     }
 
-    public void AddOneUnit(bool clear,Unit selected)
+    public void AddUnit(bool clear,Unit selected)
     {
         if(!selected) return;
         if (clear)
@@ -39,16 +38,19 @@ public class UnitManager : MonoBehaviour
         }
     }
 
+    public void SelectOneUnit(int index)
+    {
+        ClearAllSelected();
+        selectedUnits.Clear();
+        selectedUnits.Add(units[index]);
+        selectedUnits[0].controller.VisualizeSelected(true);
+    }
+
     public void ClearAllSelected()
     {
         foreach (var selectedUnit in selectedUnits)
         {
             selectedUnit.controller.VisualizeSelected(false);
         }
-    }
-
-    public void SelectMultipleUnits()
-    {
-        
     }
 }

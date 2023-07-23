@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class UnitModel : MonoBehaviour
 {
+    public UnitInfo info;
+    
     public bool isRunning;
     public bool isCrouching;
     public Vector3 destination;

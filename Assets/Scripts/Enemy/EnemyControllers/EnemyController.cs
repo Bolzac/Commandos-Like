@@ -17,4 +17,9 @@ public class EnemyController : MonoBehaviour
         enemy.model.suspiciousLocation = tr;
         enemy.enemyStateMachine.SetState(typeof(SuspiciousState));
     }
+
+    public void Die()
+    {
+        enemy.enemyStateMachine.SetState(typeof(DeadState));
+    }
 }

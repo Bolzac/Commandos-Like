@@ -134,21 +134,17 @@ public class SelectionHandler : MonoBehaviour
         var ray = unitManager.cam.ScreenPointToRay(_selectionLastPos);
         if (Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity,unitManager.teamModel.everything))
         {
-            if (hit.transform.TryGetComponent(out Unit unit)) unitManager.AddOneUnit(clear,unit);
+            if (hit.transform.TryGetComponent(out Unit unit)) unitManager.AddUnit(clear,unit);
             else
             {
-                switch (hit.transform.tag)
+                if(_coroutine != null) StopCoroutine(_coroutine);
+                if (hit.transform.CompareTag("Ground"))
                 {
-                    case "Ground":
-                        if(_coroutine != null) StopCoroutine(_coroutine);
-                        unitManager.teamController.AssignDestinations(hit.point);
-                        break;
-                    case "Interaction":
-                        var interact = hit.transform.GetComponent<IInteraction>();
-                        _coroutine = StartCoroutine(unitManager.selectedUnits[0].controller.Interaction(interact));
-                        break;
-                    default:
-                        break;
+                    unitManager.teamController.AssignDestinations(hit.point);
+                }
+                else if(hit.transform.TryGetComponent(out IInteraction interact))
+                {
+                    _coroutine = StartCoroutine(unitManager.selectedUnits[0].controller.Interaction(interact));
                 }
             }
         }
@@ -181,7 +177,7 @@ public class SelectionHandler : MonoBehaviour
             }
             for (int i = 0; i < size; i++)
             {
-                if(colliders[i].TryGetComponent(out Unit unit)) unitManager.AddOneUnit(false,unit);
+                if(colliders[i].TryGetComponent(out Unit unit)) unitManager.AddUnit(false,unit);
             }
         }
     }
