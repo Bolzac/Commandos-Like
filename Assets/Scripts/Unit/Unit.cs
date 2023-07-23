@@ -4,6 +4,7 @@ using UnityEngine.AI;
 public class Unit : MonoBehaviour
 {
     public UnitManager unitManager;
+    public UnitStateManager stateManager;
     public NavMeshAgent agent;
     public AnimationHandler animationHandler;
     public UnitModel model;
@@ -11,6 +12,7 @@ public class Unit : MonoBehaviour
 
     private void Awake()
     {
+        stateManager = GetComponent<UnitStateManager>();
         animationHandler = transform.GetChild(0).GetComponent<AnimationHandler>();
         agent = GetComponent<NavMeshAgent>();
         model = GetComponent<UnitModel>();

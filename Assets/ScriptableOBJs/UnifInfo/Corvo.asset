@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1659dea5a85942cdb0b28c658607aece, type: 3}
-  m_Name: Vargoth
+  m_Name: Corvo
   m_EditorClassIdentifier: 
-  unitName: Vargoth
+  unitName: Corvo
   unitDescription: 
-  portrait: {fileID: 21300000, guid: 227e462cb2b6f1f448b5358a6ccb43cd, type: 3}
+  portrait: {fileID: 21300000, guid: 150c0fe6c82420846b1e4f6879691008, type: 3}
+  skills:
+  - {fileID: 11400000, guid: 6606c912bacb0e7419bf06d6c99aa4be, type: 2}

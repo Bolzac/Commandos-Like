@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd9acddb7d88453bad72a3f64f651e2e, type: 3}
+  m_Name: PoisonousDart
+  m_EditorClassIdentifier: 
+  skillName: Poisonous Dart
+  skillDescription: "Belirli bir mesafedeki d\xFC\u015Fmana bir dart f\u0131rlat\u0131r.
+    Bu dart ile d\xFC\u015Fman belirli bir s\xFCre i\xE7erisinde \xF6l\xFCr. Mekanik
+    d\xFC\u015Fmanlarda i\u015Fe yaramaz."
+  skillSprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  cooldown: 3

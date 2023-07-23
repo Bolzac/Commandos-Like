@@ -4,8 +4,6 @@ using UnityEngine;
 public class WalkState : State<Unit>
 {
     [SerializeField] private float walkingSpeed;
-    [SerializeField] private float crouchingSpeed;
-    [SerializeField] private float distThreshold;
     public override void Init(Unit parent)
     {
         base.Init(parent);
@@ -14,13 +12,18 @@ public class WalkState : State<Unit>
     public override void Enter()
     {
         base.Enter();
-        Runner.agent.speed = Runner.model.isCrouching ? crouchingSpeed : walkingSpeed;
+        Runner.agent.speed = walkingSpeed;
     }
 
     public override void Update()
     {
         base.Update();
-        //if(Runner.agent.remainingDistance < distThreshold) Runner.stateMachine.SetState(typeof(IdleState));
+    }
+
+    public override void ChangeState()
+    {
+        if(!Runner.agent.hasPath) Runner.stateManager.SetState(typeof(IdleState));
+        else if(Runner.model.isCrouching) Runner.stateManager.SetState(typeof(WalkState));
     }
 
     public override void FixedUpdate()

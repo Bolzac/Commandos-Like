@@ -10,6 +10,7 @@ public abstract class State<T>: ScriptableObject where T : MonoBehaviour
     
     public virtual void Enter(){}
     public virtual void Update(){}
+    public virtual void ChangeState(){}
     public virtual void FixedUpdate(){}
     public virtual void Exit(){}
 }

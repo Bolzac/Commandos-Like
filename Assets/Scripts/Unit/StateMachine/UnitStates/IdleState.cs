@@ -11,12 +11,21 @@ public class IdleState : State<Unit>
     public override void Enter()
     {
         base.Enter();
-        //if(Runner.agent) Runner.agent.ResetPath();
     }
 
     public override void Update()
     {
         base.Update();
+    }
+    
+    public override void ChangeState()
+    {
+        if (Runner.agent.hasPath)
+        {
+            if(Runner.model.isRunning) Runner.stateManager.SetState(typeof(RunState));
+            else if(Runner.model.isCrouching) Runner.stateManager.SetState(typeof(CrouchState));
+            else Runner.stateManager.SetState(typeof(WalkState));
+        }
     }
 
     public override void FixedUpdate()

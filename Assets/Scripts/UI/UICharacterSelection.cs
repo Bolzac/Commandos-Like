@@ -1,7 +1,7 @@
 using UnityEngine;
 using Image = UnityEngine.UI.Image;
 
-public class UISelectionController : MonoBehaviour
+public class UICharacterSelection : MonoBehaviour
 {
     public UnitManager unitManager;
 

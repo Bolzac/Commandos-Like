@@ -19,6 +19,13 @@ public class RunState : State<Unit>
     public override void Update()
     {
         base.Update();
+        Runner.controller.CreateNoise();
+    }
+    
+    public override void ChangeState()
+    {
+        if(Runner.model.isCrouching) Runner.stateManager.SetState(typeof(CrouchState));
+        else if(!Runner.agent.hasPath) Runner.stateManager.SetState(typeof(IdleState));
     }
 
     public override void FixedUpdate()

@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1659dea5a85942cdb0b28c658607aece, type: 3}
-  m_Name: Corvo
+  m_Script: {fileID: 11500000, guid: 2f60c4246859415c80b4e868aef59e5b, type: 3}
+  m_Name: Corvo Walk
   m_EditorClassIdentifier: 
-  unitName: Corvo
-  unitDescription: 
-  portrait: {fileID: 21300000, guid: 150c0fe6c82420846b1e4f6879691008, type: 3}
+  walkingSpeed: 1.6
+  crouchingSpeed: 0.8
+  distThreshold: 0.1

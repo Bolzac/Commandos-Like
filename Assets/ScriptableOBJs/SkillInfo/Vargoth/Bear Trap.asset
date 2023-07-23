@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33b95fa5540affa4680dda43a125f5fd, type: 3}
+  m_Name: Bear Trap
+  m_EditorClassIdentifier: 
+  skillName: Bear Trap
+  skillDescription: "ere tuzak kurabilir. Bu tuzaklar hem mekanik hem de mekanik
+    olmayan d\xFC\u015Fmanlar i\xE7in etkilidir. E\u011Fer ki mekanik olmayan bir
+    d\xFC\u015Fman bu tuza\u011F\u0131n \xFCzerinden ge\xE7erse etkisiz hale getirilir.
+    E\u011Fer yerle ba\u011Flant\u0131s\u0131 olan bir d\xFC\u015Fman bu tuza\u011F\u0131n
+    i\xE7inden ge\xE7erse yere saplan\u0131r fakat etkisiz hale getirilemez. E\u011Fer
+    tuza\u011F\u0131n i\xE7inde olan mekanik d\xFC\u015Fman\u0131 mekanik olmayan
+    herhangi bir d\xFC\u015Fman fark eder ise onun yan\u0131na gidip tuza\u011F\u0131
+    etkisiz hale getirmek i\xE7in zaman harcar. Tuza\u011F\u0131n tekrar kullan\u0131labilmesi
+    i\xE7in yerden al\u0131nmas\u0131 gereklidir. E\u011Fer ki d\xFC\u015Fman tuza\u011F\u0131
+    mekanik olmayan varl\u0131ktan kurtar\u0131rsa tuza\u011F\u0131 kendi \xFCzerinde
+    ta\u015F\u0131r."
+  skillSprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  cooldown: 3

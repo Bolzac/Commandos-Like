@@ -34,6 +34,7 @@ public class UnitStateManager : MonoBehaviour
     private void Update()
     {
         currentState.Update();
+        currentState.ChangeState();
     }
 
     private void FixedUpdate()

@@ -53,7 +53,7 @@ public class SelectionHandler : MonoBehaviour
 
     private void Update()
     {
-        if(DialogueManager.instance.DialogueIsPlaying) return;
+        if (!CanSelect()) return;
 
         if (Input.GetMouseButtonUp(0))
         {
@@ -65,8 +65,8 @@ public class SelectionHandler : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(DialogueManager.instance.DialogueIsPlaying) return;
-        
+        if (!CanSelect()) return;
+
         if (Input.GetMouseButtonDown(0))
         {
             _selectionStartPos = Input.mousePosition;
@@ -134,7 +134,11 @@ public class SelectionHandler : MonoBehaviour
         var ray = unitManager.cam.ScreenPointToRay(_selectionLastPos);
         if (Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity,unitManager.teamModel.everything))
         {
-            if (hit.transform.TryGetComponent(out Unit unit)) unitManager.AddUnit(clear,unit);
+            if (hit.transform.TryGetComponent(out Unit unit))
+            {
+                unitManager.AddUnit(clear,unit);
+                unitManager.uıSkillSelection.OnSelectionUnitChanged(unitManager.selectedUnits[0]);
+            }
             else
             {
                 if(_coroutine != null) StopCoroutine(_coroutine);
@@ -156,6 +160,7 @@ public class SelectionHandler : MonoBehaviour
         SetVertices();
         CreateDetectionBox(_startWorldPosition,_endWorldPosition,true);
         CreateDetectionBox(_firstVertexWorldPos,_secondVertexWorldPos,false);
+        unitManager.uıSkillSelection.OnSelectionUnitChanged(unitManager.selectedUnits[0]);
     }
 
     private void CreateDetectionBox(Vector3 worldPosOne,Vector3 worldPosTwo,bool clear)
@@ -221,5 +226,13 @@ public class SelectionHandler : MonoBehaviour
                 _clickTime = 0;
             }
         }
+    }
+
+    private bool CanSelect()
+    {
+        if(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return false;
+        if(DialogueManager.instance.DialogueIsPlaying) return false;
+
+        return true;
     }
 }

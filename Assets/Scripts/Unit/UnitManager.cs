@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class UnitManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class UnitManager : MonoBehaviour
 
     public Unit[] units;
     public List<Unit> selectedUnits;
+    public UISkillSelection uıSkillSelection;
 
     private void Awake()
     {
@@ -17,6 +19,7 @@ public class UnitManager : MonoBehaviour
         teamController = GetComponent<TeamController>();
         units = transform.GetComponentsInChildren<Unit>();
         AddUnit(false,units[0]);
+        uıSkillSelection.OnSelectionUnitChanged(selectedUnits[0]);
         foreach (var unit in units)
         {
             unit.Init(this);
@@ -44,6 +47,7 @@ public class UnitManager : MonoBehaviour
         selectedUnits.Clear();
         selectedUnits.Add(units[index]);
         selectedUnits[0].controller.VisualizeSelected(true);
+        uıSkillSelection.OnSelectionUnitChanged(selectedUnits[0]);
     }
 
     public void ClearAllSelected()
