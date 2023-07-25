@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Test
   m_EditorClassIdentifier: 
   npcName: Test
-  dialogue: {fileID: 4900000, guid: da16605ea144a3d429aac9b7e63378c2, type: 3}
+  dialogue: {fileID: 4900000, guid: bc4dfdcf898fa4c44847e3b77a877de4, type: 3}
+  npcPortrait: {fileID: 0}

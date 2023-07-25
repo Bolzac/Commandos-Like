@@ -3,5 +3,7 @@ using UnityEngine;
 public abstract class IInteraction : MonoBehaviour
 {
     public float distanceThreshold;
-    public abstract void Interaction();
+    public bool isSpeakable;
+
+    public abstract void Interaction(Unit unit);
 }

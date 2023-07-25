@@ -17,7 +17,6 @@ public class DeadState : State<Enemy>
         Runner.model.capsuleCollider.enabled = false;
         Runner.fov.gameObject.SetActive(false);
         Runner.agent.enabled = false;
-        Runner.animationHandler.PlayTargetAnim(animName,0.25f);
     }
 
     public override void Update()

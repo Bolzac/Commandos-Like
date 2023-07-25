@@ -10,11 +10,6 @@ public class UnitController : MonoBehaviour
     private Collider[] _results = new Collider[4];
     private int _size;
 
-    private void Awake()
-    {
-        unit = GetComponent<Unit>();
-    }
-
     public void VisualizeSelected(bool isSelected)
     {
         unit.model.selection.SetActive(isSelected);
@@ -30,10 +25,12 @@ public class UnitController : MonoBehaviour
         Move(interaction.transform.position);
         yield return new WaitForEndOfFrame();
         yield return new WaitUntil(() => interaction.distanceThreshold >= unit.agent.remainingDistance);
+        if (interaction.isSpeakable) DialogueManager.instance.unitSprite.sprite = unit.model.info.portrait;
         unit.agent.ResetPath();
         if(unit.model.isCrouching) StandUp();
         DetectInteractionAnim(interaction);
-        interaction.Interaction();
+        unit.model.isInteractedWithSomething = true;
+        interaction.Interaction(unit);
     }
 
     private void DetectInteractionAnim(IInteraction interaction)
@@ -41,7 +38,6 @@ public class UnitController : MonoBehaviour
         switch (interaction.tag)
         {
             case "Enemy" :
-                //unit.animationHandler.PlayTargetAnim("Stealth Assassination",0.25f);
                 break;
             default:
                 break;
@@ -71,5 +67,22 @@ public class UnitController : MonoBehaviour
                 _results[i].GetComponent<EnemyController>().ReactSound(unit.model.soundSource);
             }
         }
+    }
+
+    public void SetReadySkill(int index)
+    {
+        unit.model.readySkill = unit.model.info.skills[index];
+        unit.stateManager.SetState(typeof(SkillReadyState));
+    }
+
+    public void DisableSkill()
+    {
+        unit.model.readySkill = null;
+        unit.stateManager.SetState(typeof(IdleState));
+    }
+
+    public void SetFalseIsInteracted()
+    {
+        unit.model.isInteractedWithSomething = false;
     }
 }

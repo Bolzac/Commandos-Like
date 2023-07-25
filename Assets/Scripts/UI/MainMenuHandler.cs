@@ -7,7 +7,7 @@ public class MainMenuHandler : MonoBehaviour
 
     public void SelectPlay()
     {
-        GameManager.Instance.sceneHandler.OpenLevelSelection();
+        GameManager.Instance.sceneHandler.OpenDemoScene();
     }
 
     public void SelectOptions()

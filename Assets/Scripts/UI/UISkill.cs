@@ -38,13 +38,11 @@ public class UISkill : MonoBehaviour, IPointerEnterHandler,IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("wait for second to show description");
         _coroutine = StartCoroutine(ShowDescription());
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("Hide description");
         if(_coroutine != null)  StopCoroutine(_coroutine);
         descriptionBlock.SetActive(false);
     }

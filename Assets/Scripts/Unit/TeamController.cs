@@ -75,6 +75,11 @@ public class TeamController : MonoBehaviour
         }
     }
 
+    public void EnableSkill(int index)
+    {
+        _unitManager.selectedUnits[0].controller.SetReadySkill(index);
+    }
+
     private void OnDrawGizmos()
     {
         if(points.Count == 0) return;

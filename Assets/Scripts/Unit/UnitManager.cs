@@ -1,53 +1,63 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
-
 public class UnitManager : MonoBehaviour
 {
     public Camera cam;
-    public InputHandler inputHandler;
     public TeamController teamController;
     public TeamModel teamModel;
 
     public Unit[] units;
     public List<Unit> selectedUnits;
-    public UISkillSelection uıSkillSelection;
+    public Unit mainUnit;
 
-    private void Awake()
+    private void Start()
     {
-        teamModel = GetComponent<TeamModel>();
-        teamController = GetComponent<TeamController>();
         units = transform.GetComponentsInChildren<Unit>();
-        AddUnit(false,units[0]);
-        uıSkillSelection.OnSelectionUnitChanged(selectedUnits[0]);
+        for (var i = 0; i < units.Length; i++)
+        {
+            units[i].index = i;
+        }
+        SelectOneUnit(0);
         foreach (var unit in units)
         {
             unit.Init(this);
         }
+        
+        UIManager.instance.characterPanelHandler.InitPanel(units);
+        UIManager.instance.skillPanelHandler.ShowPanel();
     }
 
-    public void AddUnit(bool clear,Unit selected)
+    public void SelectMultipleUnit(int[] indexes)
     {
-        if(!selected) return;
-        if (clear)
+        foreach (var index in indexes)
         {
-            ClearAllSelected();
-            selectedUnits.Clear();
+            if(selectedUnits.Contains(units[index])) continue;
+            
+            selectedUnits.Add(units[index]);
+            units[index].controller.VisualizeSelected(true);
         }
-        if (!selectedUnits.Contains(selected))
+
+        if (selectedUnits.Count > 0 && mainUnit != selectedUnits[0])
         {
-            selectedUnits.Add(selected);
-            selectedUnits[^1].controller.VisualizeSelected(true);
+            mainUnit = selectedUnits[0];
+            OnMainUnitChanged();
         }
     }
 
     public void SelectOneUnit(int index)
     {
+        if (mainUnit)
+        {
+            if (mainUnit.model.isSpeaking) return;
+        }
+        if(selectedUnits.Contains(units[index]) && selectedUnits.Count == 1) return;
+        
         ClearAllSelected();
-        selectedUnits.Clear();
         selectedUnits.Add(units[index]);
         selectedUnits[0].controller.VisualizeSelected(true);
-        uıSkillSelection.OnSelectionUnitChanged(selectedUnits[0]);
+        mainUnit = selectedUnits[0];
+        
+        OnMainUnitChanged();
     }
 
     public void ClearAllSelected()
@@ -56,5 +66,11 @@ public class UnitManager : MonoBehaviour
         {
             selectedUnit.controller.VisualizeSelected(false);
         }
+        selectedUnits.Clear();
+    }
+
+    private void OnMainUnitChanged()
+    {
+        UIManager.instance.skillPanelHandler.SetSkills(mainUnit);
     }
 }

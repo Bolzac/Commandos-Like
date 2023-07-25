@@ -32,7 +32,7 @@ public class Enemy : IInteraction
         animationHandler.SetPatrolBlend(agent.velocity.magnitude);
     }
 
-    public override void Interaction()
+    public override void Interaction(Unit unit)
     {
         controller.Die();
     }

@@ -3,228 +3,62 @@ using UnityEngine;
 public class SelectionHandler : MonoBehaviour
 {
     public UnitManager unitManager;
-
-    #region SelectionBox
+    public Clicker clicker;
+    public MultipleSelector multipleSelector;
+    public CursorToWorld cursorToWorld;
     
-    private float _selectionBoxSize;
-    [Header("SelectionBox")]
     public float sizeThreshold;
-    public RectTransform selectionBox;
-
-    #endregion
-    #region ScreenPositions
     
     private Vector2 _selectionStartPos;
     private Vector2 _selectionLastPos;
-    private Vector2 _firstVertex;
-    private Vector2 _secondVertex;
-
-    #endregion
-    #region WorldPositions
-
     private Vector3 _startWorldPosition;
     private Vector3 _endWorldPosition;
-    private Vector3 _firstVertexWorldPos;
-    private Vector3 _secondVertexWorldPos;
-
-    #endregion
-    #region Click
     
-    private int _clickTime;
-    public float clickSpacing;
-    private float _counter;
+    private SingleSelector _singleSelector;
 
-    #endregion
-    #region Layers
-
-    [Header("Layers")]
-    public LayerMask groundLayer;
-    public LayerMask unitLayer;
-    
-    #endregion
-
-    private Coroutine _coroutine;
-    private bool _isStarted;
+    private float _selectionBoxSize;
 
     private void Awake()
     {
         unitManager = GetComponent<UnitManager>();
+        _singleSelector = new SingleSelector();
     }
 
     private void Update()
-    {
-        if (!CanSelect()) return;
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            unitManager.teamController.DisableRunning();
-            _clickTime++;
-        }
-        ClickCounter();
+    {   
+        if (CanSelect()) clicker.ClickCounter(unitManager);
     }
 
     private void LateUpdate()
     {
-        if (!CanSelect()) return;
-
+        if (CanSelect()) Selection();
+    }
+    
+    private void Selection()
+    {
         if (Input.GetMouseButtonDown(0))
         {
             _selectionStartPos = Input.mousePosition;
-            _startWorldPosition = GetMouseWorldPosition(_selectionStartPos);
-            _isStarted = true;
+            _startWorldPosition = cursorToWorld.GetMouseWorldPosition(_selectionStartPos);
         }
 
-        if (_isStarted && Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0))
         {
             _selectionLastPos = Input.mousePosition;
             _selectionBoxSize = Mathf.Abs((_selectionStartPos.x - _selectionLastPos.x) * (_selectionStartPos.y - _selectionLastPos.y));
-            if (_selectionBoxSize > sizeThreshold) SetSelectionBox();
+            if (_selectionBoxSize > sizeThreshold) UIManager.instance.selectionBoxHandler.CreateSelectionBox(_selectionStartPos,_selectionLastPos);
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            _endWorldPosition = GetMouseWorldPosition(_selectionLastPos);
-            _isStarted = false;
-            if (selectionBox.gameObject.activeSelf)
+            _endWorldPosition = cursorToWorld.GetMouseWorldPosition(_selectionLastPos);
+            if (UIManager.instance.selectionBoxHandler.selectionBox.gameObject.activeSelf)
             {
-                MultipleSelection();
-                DisableSelectionBox();
+                multipleSelector.MultipleSelection(_startWorldPosition,_endWorldPosition,_selectionStartPos,_selectionLastPos,unitManager,cursorToWorld);
+                UIManager.instance.selectionBoxHandler.DisableSelectionBox();
             }
-            else if(Input.GetKey(KeyCode.LeftControl)) SingleSelection(false);
-            else SingleSelection(true);
-        }
-    }
-
-    private void SetSelectionBox()
-    {
-        selectionBox.gameObject.SetActive(true);
-        selectionBox.position = _selectionStartPos;
-        if (_selectionStartPos.x < _selectionLastPos.x && _selectionStartPos.y > _selectionLastPos.y)
-        {
-            selectionBox.pivot = Vector2.up;
-            selectionBox.sizeDelta = new Vector2(Mathf.Abs(_selectionStartPos.x - _selectionLastPos.x),
-                Mathf.Abs(_selectionStartPos.y - _selectionLastPos.y));   
-        }else if (_selectionStartPos.x > _selectionLastPos.x && _selectionStartPos.y < _selectionLastPos.y)
-        {
-            selectionBox.pivot = Vector2.right;
-            selectionBox.sizeDelta = new Vector2(Mathf.Abs(_selectionLastPos.x - _selectionStartPos.x),
-                Mathf.Abs(_selectionLastPos.y - _selectionStartPos.y));
-        }else if (_selectionStartPos.x > _selectionLastPos.x && _selectionStartPos.y > _selectionLastPos.y)
-        {
-            selectionBox.pivot = Vector2.one;
-            selectionBox.sizeDelta = new Vector2(Mathf.Abs(_selectionLastPos.x - _selectionStartPos.x),
-                Mathf.Abs(_selectionLastPos.y - _selectionStartPos.y));
-        }
-        else
-        {
-            selectionBox.pivot = Vector2.zero;
-            selectionBox.sizeDelta = new Vector2(Mathf.Abs(_selectionLastPos.x - _selectionStartPos.x),
-                Mathf.Abs(_selectionLastPos.y - _selectionStartPos.y));
-        }
-    }
-
-    private void DisableSelectionBox()
-    {
-        selectionBox.sizeDelta = Vector2.zero;
-        selectionBox.gameObject.SetActive(false);
-    }
-
-    private void SingleSelection(bool clear)
-    {
-        var ray = unitManager.cam.ScreenPointToRay(_selectionLastPos);
-        if (Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity,unitManager.teamModel.everything))
-        {
-            if (hit.transform.TryGetComponent(out Unit unit))
-            {
-                unitManager.AddUnit(clear,unit);
-                unitManager.uıSkillSelection.OnSelectionUnitChanged(unitManager.selectedUnits[0]);
-            }
-            else
-            {
-                if(_coroutine != null) StopCoroutine(_coroutine);
-                if (hit.transform.CompareTag("Ground"))
-                {
-                    unitManager.teamController.AssignDestinations(hit.point);
-                }
-                else if(hit.transform.TryGetComponent(out IInteraction interact))
-                {
-                    _coroutine = StartCoroutine(unitManager.selectedUnits[0].controller.Interaction(interact));
-                }
-            }
-        }
-    }
-
-    // ReSharper disable Unity.PerformanceAnalysis
-    private void MultipleSelection()
-    {
-        SetVertices();
-        CreateDetectionBox(_startWorldPosition,_endWorldPosition,true);
-        CreateDetectionBox(_firstVertexWorldPos,_secondVertexWorldPos,false);
-        unitManager.uıSkillSelection.OnSelectionUnitChanged(unitManager.selectedUnits[0]);
-    }
-
-    private void CreateDetectionBox(Vector3 worldPosOne,Vector3 worldPosTwo,bool clear)
-    {
-        var colliders = new Collider[4];
-        var halfExtents = (worldPosOne - worldPosTwo) / 2f;
-        halfExtents = new Vector3(Mathf.Abs(halfExtents.x), Mathf.Abs(halfExtents.y), Mathf.Abs(halfExtents.z));
-        if (halfExtents.y < 3) halfExtents.y = 3;
-        
-        var size = Physics.OverlapBoxNonAlloc((worldPosOne + worldPosTwo) / 2f, halfExtents, colliders,
-            Quaternion.identity, unitLayer);
-        
-        if (size > 0)
-        {
-            if (clear)
-            {
-                unitManager.ClearAllSelected();
-                unitManager.selectedUnits.Clear();   
-            }
-            for (int i = 0; i < size; i++)
-            {
-                if(colliders[i].TryGetComponent(out Unit unit)) unitManager.AddUnit(false,unit);
-            }
-        }
-    }
-
-    private void SetVertices()
-    {
-        _firstVertex = new Vector2(_selectionStartPos.x, _selectionLastPos.y);
-        _secondVertex = new Vector2(_selectionLastPos.x, _selectionStartPos.y);
-        _firstVertexWorldPos = GetMouseWorldPosition(_firstVertex);
-        _secondVertexWorldPos = GetMouseWorldPosition(_secondVertex);
-    }
-
-
-    private Vector3 GetMouseWorldPosition(Vector3 pos)
-    {
-        Ray ray = unitManager.cam.ScreenPointToRay(pos);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit,Mathf.Infinity,groundLayer))
-        {
-            return hit.point;
-        }
-
-        return Vector3.zero;
-    }
-
-    private void ClickCounter()
-    {
-        if (_clickTime > 0)
-        {
-            _counter += Time.deltaTime;
-            if (_counter >= clickSpacing)
-            {
-                _counter = 0;
-                _clickTime = 0;
-            }
-            else if(_clickTime == 2)
-            {
-                unitManager.teamController.HandleRunning();
-                _counter = 0;
-                _clickTime = 0;
-            }
+            else if(Input.GetKey(KeyCode.LeftControl)) _singleSelector.SingleSelection(unitManager);
+            else _singleSelector.SingleSelection(unitManager);
         }
     }
 
@@ -232,6 +66,7 @@ public class SelectionHandler : MonoBehaviour
     {
         if(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return false;
         if(DialogueManager.instance.DialogueIsPlaying) return false;
+        if (unitManager.selectedUnits[0].model.isSpeaking) return false;
 
         return true;
     }
