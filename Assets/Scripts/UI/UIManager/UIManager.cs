@@ -1,15 +1,63 @@
+using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager instance;
     public SelectionBoxHandler selectionBoxHandler;
     public CharacterPanelHandler characterPanelHandler;
     public SkillPanelHandler skillPanelHandler;
+    public DialogueBoxHandler dialogueBoxHandler;
+    public PausePanelHandler pausePanelHandler;
 
-    private void Awake()
+    public void InitCharacterPanel(Member[] members)
     {
-        instance = this;
+        characterPanelHandler.InitPanel(members);
+    }
+
+    public void SetSkills(Member member)
+    {
+        skillPanelHandler.SetSkills(member);
+    }
+
+    public void StartDialogueUI()
+    {
+        dialogueBoxHandler.ShowPanel();
+    }
+
+    public void ExitDialogueUI()
+    {
+        dialogueBoxHandler.HidePanel();
+    }
+
+    public void StartPlayUI()
+    {
+        skillPanelHandler.ShowPanel();
+        characterPanelHandler.ShowPanel();
+    }
+
+    public void ExitPlayUI()
+    {
+        skillPanelHandler.HidePanel();
+        characterPanelHandler.HidePanel();
+    }
+
+    public void EnableMultipleSelectionUI(Vector2 a, Vector2 b)
+    {
+        selectionBoxHandler.CreateSelectionBox(a,b);
+    }
+
+    public void DisableMultipleSelectionUI()
+    {
+        selectionBoxHandler.DisableSelectionBox();
+    }
+
+    public void StartPauseUI()
+    {
+        pausePanelHandler.ShowPanel();
+    }
+
+    public void ExitPauseUI()
+    {
+        pausePanelHandler.HidePanel();
     }
 }

@@ -8,33 +8,24 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager instance;
 
-    public GameObject dialogueBox;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI sentenceText;
     [SerializeField] private Animator portraitAnimator;
     [SerializeField] private GameObject[] choices;
-    public Image unitSprite;
-    
+    [SerializeField] private Image unitSprite;
+
     private TextMeshProUGUI[] choicesText;
     private Story currentStory;
     private List<Choice> currentChoices;
-    private Unit speakerUnit;
-    public bool DialogueIsPlaying { get; private set; }
+    private Member _speakerMember;
 
     private const string SPEAKER_TAG = "speaker";
     private const string PORTRAIT_TAG = "portrait";
-    private void Awake()
-    {
-        instance = this;
-    }
 
     private void Start()
     {
         currentChoices = new List<Choice>();
-        DialogueIsPlaying = false;
-        dialogueBox.SetActive(false);
         choicesText = new TextMeshProUGUI[choices.Length];
         for (var i = 0; i < choices.Length; i++)
         {
@@ -42,14 +33,15 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void StartDialogue(TextAsset dialogue, Unit unit)
+    public void StartDialogue(TextAsset dialogue, Member member)
     {
-        UIManager.instance.skillPanelHandler.HidePanel();
-        speakerUnit = unit;
+        InGameManager.instance.SetState(typeof(DialogueState));
+        
+        _speakerMember = member;
+        unitSprite.sprite = _speakerMember.model.info.portrait;
+        
         currentStory = new Story(dialogue.text);
-        DialogueIsPlaying = true;
-        dialogueBox.SetActive(true);
-        unitSprite.sprite = speakerUnit.model.info.portrait;
+
         DisplayNextSentence();
     }
 
@@ -66,10 +58,7 @@ public class DialogueManager : MonoBehaviour
             DisplayChoices();
             HandleTags(currentStory.currentTags);
         }
-        else
-        {
-            StartCoroutine(EndDialogue());
-        }
+        else StartCoroutine(EndDialogue());
     }
 
     private void HandleTags(List<string> currentTags)
@@ -138,11 +127,8 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator EndDialogue()
     {
-        UIManager.instance.skillPanelHandler.ShowPanel();
-        speakerUnit.model.isSpeaking = false;
-        dialogueBox.SetActive(false);
+        InGameManager.instance.SetState(typeof(PlayState));
         sentenceText.text = "";
         yield return new WaitForSeconds(0.1f);
-        DialogueIsPlaying = false;
     }
 }

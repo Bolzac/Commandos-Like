@@ -1,31 +1,56 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class CameraController : MonoBehaviour
+public class CameraController : Child
 {
-    public InputHandler inputHandler;
-    public float camDragSpeed;
-    public float camTurnSpeed;
+    [SerializeField] private InputVariables inputModel;
+    
+    private Transform _transform;
+    private Vector3 position;
+    private Vector3 _temp;
 
-    private void Update() 
+    [SerializeField] private Transform cam;
+    [SerializeField] private float camDragSpeed;
+    [SerializeField] private float camTurnSpeed;
+    [SerializeField] private float zoomSpeed;
+
+    [SerializeField] private float minZoom;
+    [SerializeField] private float maxZoom;
+
+    private void Awake()
     {
-        DragCamera();
-        TurnCamera();
+        _transform = transform;
     }
 
-    private void DragCamera()
+    public void FocusOnCharacter()
     {
-        if (inputHandler.dragEnable)
-        {
-            transform.position -= transform.forward * (inputHandler.vertical * (camDragSpeed * Time.deltaTime));
-            transform.position -= transform.right * (inputHandler.horizontal * (camDragSpeed * Time.deltaTime));
-        }
+        transform.position = runner.teamManagement.mainMember.transform.position;
     }
 
-    private void TurnCamera()
+    public void DragCamera()
     {
-        if (inputHandler.turnEnable)
-        {
-            transform.Rotate(0,inputHandler.horizontal * Time.deltaTime * camTurnSpeed,0);
-        }
+        if(!inputModel.drag) return; 
+        position = _transform.position;
+        position -= _transform.forward * (inputModel.mouseDelta.y * (camDragSpeed * Time.deltaTime));
+        position -= _transform.right * (inputModel.mouseDelta.x * (camDragSpeed * Time.deltaTime));
+        transform.position = position;
+    }
+
+    public void TurnCamera()
+    {
+        if(!inputModel.turn) return;
+        transform.Rotate(0,inputModel.mouseDelta.x * Time.deltaTime * camTurnSpeed,0);
+    }
+
+    public void ZoomCamera()
+    {
+        if(inputModel.zoomDelta.y == 0) return;
+        
+        _temp = cam.localPosition;
+        _temp.z += inputModel.zoomDelta.y * zoomSpeed * Time.deltaTime;
+
+        _temp.z = Mathf.Clamp(_temp.z, minZoom, maxZoom);
+        
+        cam.localPosition = _temp;
     }
 }

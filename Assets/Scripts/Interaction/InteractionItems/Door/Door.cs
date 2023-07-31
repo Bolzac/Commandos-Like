@@ -17,7 +17,7 @@ public class Door : IInteraction
         anim = transform.parent.GetComponent<Animation>();
     }
 
-    public override void Interaction(Unit unit)
+    public override void Interaction(Member member)
     {
         PlayAccordingAnimations();
     }

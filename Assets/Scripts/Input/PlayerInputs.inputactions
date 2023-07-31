@@ -34,10 +34,10 @@
                 },
                 {
                     "name": "Zoom",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "acbac2ee-d446-4d9e-af91-1e34040b34a8",
                     "expectedControlType": "Delta",
-                    "processors": "",
+                    "processors": "NormalizeVector2",
                     "interactions": "",
                     "initialStateCheck": true
                 }
@@ -90,31 +90,13 @@
             ]
         },
         {
-            "name": "Actions",
+            "name": "MemberAction",
             "id": "dfabe36c-fb2d-45bb-a47b-32888276fc6a",
             "actions": [
                 {
                     "name": "Crouch",
                     "type": "Button",
                     "id": "fca7ff70-4018-46dd-9378-15431c5c8872",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Run",
-                    "type": "Button",
-                    "id": "08cc4ad1-0750-44e7-b550-65180ba2ce40",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "MultiTap",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Pause",
-                    "type": "Button",
-                    "id": "fe050692-e91d-41ad-804b-3ae3d555ff08",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -132,21 +114,27 @@
                     "action": "Crouch",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
+                }
+            ]
+        },
+        {
+            "name": "StateAction",
+            "id": "030191a0-a08a-453b-8899-ff4a7d209690",
+            "actions": [
                 {
-                    "name": "",
-                    "id": "7273fdfb-4119-465e-bb4b-f5f2ee4c9bc1",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "6a321b27-f359-4a1a-ab92-53a6c58ecc09",
+                    "expectedControlType": "Button",
                     "processors": "",
-                    "groups": "",
-                    "action": "Run",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
                 {
                     "name": "",
-                    "id": "1a494a9d-3b42-4d05-a675-c35331adaf14",
+                    "id": "1896b257-79d2-4f44-8379-b7e518dea3c2",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",

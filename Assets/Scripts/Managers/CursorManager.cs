@@ -1,14 +1,7 @@
 using UnityEngine;
 public class CursorManager : MonoBehaviour
 {
-    public static CursorManager instance;
-    
     [SerializeField] private Texture2D defaultCursor;
-
-    private void Awake()
-    {
-        instance = this;
-    }
 
     private void Start()
     {

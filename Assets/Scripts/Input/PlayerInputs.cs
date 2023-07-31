@@ -56,10 +56,10 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Zoom"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""acbac2ee-d446-4d9e-af91-1e34040b34a8"",
                     ""expectedControlType"": ""Delta"",
-                    ""processors"": """",
+                    ""processors"": ""NormalizeVector2"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 }
@@ -112,31 +112,13 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Actions"",
+            ""name"": ""MemberAction"",
             ""id"": ""dfabe36c-fb2d-45bb-a47b-32888276fc6a"",
             ""actions"": [
                 {
                     ""name"": ""Crouch"",
                     ""type"": ""Button"",
                     ""id"": ""fca7ff70-4018-46dd-9378-15431c5c8872"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Run"",
-                    ""type"": ""Button"",
-                    ""id"": ""08cc4ad1-0750-44e7-b550-65180ba2ce40"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""MultiTap"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Pause"",
-                    ""type"": ""Button"",
-                    ""id"": ""fe050692-e91d-41ad-804b-3ae3d555ff08"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -154,21 +136,27 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Crouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
+                }
+            ]
+        },
+        {
+            ""name"": ""StateAction"",
+            ""id"": ""030191a0-a08a-453b-8899-ff4a7d209690"",
+            ""actions"": [
                 {
-                    ""name"": """",
-                    ""id"": ""7273fdfb-4119-465e-bb4b-f5f2ee4c9bc1"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""6a321b27-f359-4a1a-ab92-53a6c58ecc09"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Run"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""1a494a9d-3b42-4d05-a675-c35331adaf14"",
+                    ""id"": ""1896b257-79d2-4f44-8379-b7e518dea3c2"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -188,11 +176,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Camera_Drag = m_Camera.FindAction("Drag", throwIfNotFound: true);
         m_Camera_Turn = m_Camera.FindAction("Turn", throwIfNotFound: true);
         m_Camera_Zoom = m_Camera.FindAction("Zoom", throwIfNotFound: true);
-        // Actions
-        m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
-        m_Actions_Crouch = m_Actions.FindAction("Crouch", throwIfNotFound: true);
-        m_Actions_Run = m_Actions.FindAction("Run", throwIfNotFound: true);
-        m_Actions_Pause = m_Actions.FindAction("Pause", throwIfNotFound: true);
+        // MemberAction
+        m_MemberAction = asset.FindActionMap("MemberAction", throwIfNotFound: true);
+        m_MemberAction_Crouch = m_MemberAction.FindAction("Crouch", throwIfNotFound: true);
+        // StateAction
+        m_StateAction = asset.FindActionMap("StateAction", throwIfNotFound: true);
+        m_StateAction_Pause = m_StateAction.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -321,67 +310,97 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     }
     public CameraActions @Camera => new CameraActions(this);
 
-    // Actions
-    private readonly InputActionMap m_Actions;
-    private List<IActionsActions> m_ActionsActionsCallbackInterfaces = new List<IActionsActions>();
-    private readonly InputAction m_Actions_Crouch;
-    private readonly InputAction m_Actions_Run;
-    private readonly InputAction m_Actions_Pause;
-    public struct ActionsActions
+    // MemberAction
+    private readonly InputActionMap m_MemberAction;
+    private List<IMemberActionActions> m_MemberActionActionsCallbackInterfaces = new List<IMemberActionActions>();
+    private readonly InputAction m_MemberAction_Crouch;
+    public struct MemberActionActions
     {
         private @PlayerInputs m_Wrapper;
-        public ActionsActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Crouch => m_Wrapper.m_Actions_Crouch;
-        public InputAction @Run => m_Wrapper.m_Actions_Run;
-        public InputAction @Pause => m_Wrapper.m_Actions_Pause;
-        public InputActionMap Get() { return m_Wrapper.m_Actions; }
+        public MemberActionActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Crouch => m_Wrapper.m_MemberAction_Crouch;
+        public InputActionMap Get() { return m_Wrapper.m_MemberAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ActionsActions set) { return set.Get(); }
-        public void AddCallbacks(IActionsActions instance)
+        public static implicit operator InputActionMap(MemberActionActions set) { return set.Get(); }
+        public void AddCallbacks(IMemberActionActions instance)
         {
-            if (instance == null || m_Wrapper.m_ActionsActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_ActionsActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_MemberActionActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MemberActionActionsCallbackInterfaces.Add(instance);
             @Crouch.started += instance.OnCrouch;
             @Crouch.performed += instance.OnCrouch;
             @Crouch.canceled += instance.OnCrouch;
-            @Run.started += instance.OnRun;
-            @Run.performed += instance.OnRun;
-            @Run.canceled += instance.OnRun;
+        }
+
+        private void UnregisterCallbacks(IMemberActionActions instance)
+        {
+            @Crouch.started -= instance.OnCrouch;
+            @Crouch.performed -= instance.OnCrouch;
+            @Crouch.canceled -= instance.OnCrouch;
+        }
+
+        public void RemoveCallbacks(IMemberActionActions instance)
+        {
+            if (m_Wrapper.m_MemberActionActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IMemberActionActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MemberActionActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MemberActionActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public MemberActionActions @MemberAction => new MemberActionActions(this);
+
+    // StateAction
+    private readonly InputActionMap m_StateAction;
+    private List<IStateActionActions> m_StateActionActionsCallbackInterfaces = new List<IStateActionActions>();
+    private readonly InputAction m_StateAction_Pause;
+    public struct StateActionActions
+    {
+        private @PlayerInputs m_Wrapper;
+        public StateActionActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Pause => m_Wrapper.m_StateAction_Pause;
+        public InputActionMap Get() { return m_Wrapper.m_StateAction; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(StateActionActions set) { return set.Get(); }
+        public void AddCallbacks(IStateActionActions instance)
+        {
+            if (instance == null || m_Wrapper.m_StateActionActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_StateActionActionsCallbackInterfaces.Add(instance);
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
         }
 
-        private void UnregisterCallbacks(IActionsActions instance)
+        private void UnregisterCallbacks(IStateActionActions instance)
         {
-            @Crouch.started -= instance.OnCrouch;
-            @Crouch.performed -= instance.OnCrouch;
-            @Crouch.canceled -= instance.OnCrouch;
-            @Run.started -= instance.OnRun;
-            @Run.performed -= instance.OnRun;
-            @Run.canceled -= instance.OnRun;
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
         }
 
-        public void RemoveCallbacks(IActionsActions instance)
+        public void RemoveCallbacks(IStateActionActions instance)
         {
-            if (m_Wrapper.m_ActionsActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_StateActionActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IActionsActions instance)
+        public void SetCallbacks(IStateActionActions instance)
         {
-            foreach (var item in m_Wrapper.m_ActionsActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_StateActionActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_ActionsActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_StateActionActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public ActionsActions @Actions => new ActionsActions(this);
+    public StateActionActions @StateAction => new StateActionActions(this);
     public interface ICameraActions
     {
         void OnDelta(InputAction.CallbackContext context);
@@ -389,10 +408,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnTurn(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
     }
-    public interface IActionsActions
+    public interface IMemberActionActions
     {
         void OnCrouch(InputAction.CallbackContext context);
-        void OnRun(InputAction.CallbackContext context);
+    }
+    public interface IStateActionActions
+    {
         void OnPause(InputAction.CallbackContext context);
     }
 }

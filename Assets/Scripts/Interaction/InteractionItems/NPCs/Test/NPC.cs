@@ -1,23 +1,24 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class NPC : IInteraction
 {
+    [SerializeField] private UnityEvent<TextAsset,Member> onDialogueStart;
     public NPCModel npc;
     public Texture2D npcCursor;
-    public override void Interaction(Unit unit)
+    public override void Interaction(Member member)
     {
-        unit.model.isSpeaking = true;
-        DialogueManager.instance.StartDialogue(npc.dialogue,unit);
+        onDialogueStart?.Invoke(npc.dialogue,member);
     }
 
     private void OnMouseEnter()
     {
-        CursorManager.instance.SetCursor(npcCursor);
+        InGameManager.instance.cursorManager.SetCursor(npcCursor);
     }
 
     private void OnMouseExit()
     {
-        CursorManager.instance.ReturnDefaultCursor();
+        InGameManager.instance.cursorManager.ReturnDefaultCursor();
     }
 }

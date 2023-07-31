@@ -6,9 +6,8 @@ public class CharacterPanelHandler
 {
     public GameObject characterPanel;
 
-    public void InitPanel(Unit[] units)
+    public void InitPanel(Member[] units)
     {
-        ShowPanel();
         for (var i = 0; i < units.Length; i++)
         {
             var child = characterPanel.transform.GetChild(i).gameObject;

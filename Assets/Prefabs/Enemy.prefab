@@ -769,7 +769,7 @@ GameObject:
   - component: {fileID: 1181608840416282566}
   m_Layer: 6
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -850,7 +850,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11cd7c4b200319499d8bdebc3f9518f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationTransform: {fileID: 3183986115081762387}
+  distanceThreshold: 2
   cam: {fileID: 0}
   animationHandler: {fileID: 5730941552344505620}
   agent: {fileID: 6729885506780833626}
@@ -859,7 +859,6 @@ MonoBehaviour:
   model: {fileID: 8429566112103633253}
   controller: {fileID: 8032725548269418771}
   view: {fileID: 0}
-  animator: {fileID: 4803130661587536473}
 --- !u!114 &8429566112103633253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -873,6 +872,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 2
+  capsuleCollider: {fileID: 583403409999596993}
   eye: {fileID: 6518868726484063719}
   waypoints:
   - {fileID: 0}
@@ -2681,7 +2681,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8597474975811818888}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

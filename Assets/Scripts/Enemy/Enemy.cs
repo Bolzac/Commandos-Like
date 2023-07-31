@@ -11,7 +11,6 @@ public class Enemy : IInteraction
     public EnemyModel model;
     public EnemyController controller;
     public EnemyView view;
-    public Animator animator;
 
     private void Awake()
     {
@@ -32,8 +31,8 @@ public class Enemy : IInteraction
         animationHandler.SetPatrolBlend(agent.velocity.magnitude);
     }
 
-    public override void Interaction(Unit unit)
+    public override void Interaction(Member member)
     {
-        controller.Die();
+        controller.Die(member);
     }
 }
