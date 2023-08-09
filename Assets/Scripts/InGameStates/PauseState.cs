@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 [Serializable]
@@ -9,6 +10,8 @@ public class PauseState : InGameBaseState
     public override void Enter()
     {
         onEnterPauseState?.Invoke();
+
+        Time.timeScale = 0;
     }
 
     public override void Update()
@@ -18,6 +21,7 @@ public class PauseState : InGameBaseState
 
     public override void Exit()
     {
+        Time.timeScale = 1;
         onExitPauseState?.Invoke();
     }
 }

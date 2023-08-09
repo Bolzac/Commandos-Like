@@ -14,6 +14,12 @@ public class SkillPanelHandler
             var child = skillBar.GetChild(i);
             child.GetComponent<UISkill>().SetSkillBlock(newSelected.model.info.skills[i]);
         }
+
+        for (var i = newSelected.model.info.skills.Length; i < skillBar.childCount; i++)
+        {
+            var child = skillBar.GetChild(i);
+            child.GetComponent<UISkill>().ClearSkillBlock();
+        }
     }
 
     public void ShowPanel()

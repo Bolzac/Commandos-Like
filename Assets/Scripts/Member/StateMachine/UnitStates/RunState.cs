@@ -14,13 +14,13 @@ public class RunState : State<Member>
         base.Enter();
         if(Runner.model.isCrouching) Runner.controller.StandUp();
         Runner.agent.speed = runningSpeed;
+        Runner.animationHandler.SetPatrolBlend(runningSpeed);
     }
 
     public override void Update()
     {
         base.Update();
         //Runner.controller.CreateNoise();
-        Runner.animationHandler.SetPatrolBlend(Runner.agent.velocity.magnitude);
     }
     
     public override void ChangeState()

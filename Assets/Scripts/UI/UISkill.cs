@@ -6,6 +6,7 @@ using Image = UnityEngine.UI.Image;
 
 public class UISkill : MonoBehaviour, IPointerEnterHandler,IPointerExitHandler
 {
+    private bool _isAssigned;
     [SerializeField] private Image image;
     [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] private TextMeshProUGUI descriptionText;
@@ -24,10 +25,18 @@ public class UISkill : MonoBehaviour, IPointerEnterHandler,IPointerExitHandler
 
     public void SetSkillBlock(SkillBase skill)
     {
-        gameObject.SetActive(true);
+        _isAssigned = true;
         image.sprite = skill.skillSprite;
         titleText.text = skill.skillName;
         descriptionText.text = skill.skillDescription;
+    }
+
+    public void ClearSkillBlock()
+    {
+        _isAssigned = false;
+        image.sprite = null;
+        titleText.text = "";
+        descriptionText.text = "";
     }
 
     private IEnumerator ShowDescription()
@@ -38,11 +47,13 @@ public class UISkill : MonoBehaviour, IPointerEnterHandler,IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if(!_isAssigned) return;
         _coroutine = StartCoroutine(ShowDescription());
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if(!_isAssigned) return;
         if(_coroutine != null)  StopCoroutine(_coroutine);
         descriptionBlock.SetActive(false);
     }

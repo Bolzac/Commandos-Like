@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1659dea5a85942cdb0b28c658607aece, type: 3}
   m_Name: Unknown
   m_EditorClassIdentifier: 
-  unitName: 
+  id: 71906155-103f-47c4-a9e1-d40ecaa3cd6f
+  unitName: Unknown
   unitDescription: 
   portrait: {fileID: 21300000, guid: 5df70605fb00e8047a96a79ce5b21172, type: 3}
+  skills: []
+  animationModel: {fileID: 0}

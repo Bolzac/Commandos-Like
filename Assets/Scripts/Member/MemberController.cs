@@ -9,6 +9,7 @@ public class MemberController : MonoBehaviour
 
     private Collider[] _results = new Collider[4];
     private int _size;
+    private readonly int _crouch = Animator.StringToHash("Crouch");
 
     public void VisualizeSelected(bool isSelected)
     {
@@ -46,12 +47,14 @@ public class MemberController : MonoBehaviour
 
     public void Crouch()
     {
+        member.animationHandler.animator.SetBool(_crouch,true);
         member.model.isRunning = false;
         member.model.isCrouching = true;
     }
 
     public void StandUp()
     {
+        member.animationHandler.animator.SetBool(_crouch,false);
         member.model.isCrouching = false;
     }
 

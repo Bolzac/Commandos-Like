@@ -4,7 +4,6 @@ using UnityEngine;
 public class CrouchState : State<Member>
 {
     [SerializeField] private float crouchingSpeed;
-    private readonly int _crouchParam = Animator.StringToHash("Crouch");
     public override void Init(Member parent)
     {
         base.Init(parent);
@@ -13,8 +12,8 @@ public class CrouchState : State<Member>
     public override void Enter()
     {
         base.Enter();
-        Runner.animationHandler.animator.SetBool(_crouchParam,true);
         Runner.agent.speed = crouchingSpeed;
+        Runner.animationHandler.SetPatrolBlend(crouchingSpeed);
     }
 
     public override void Update()
@@ -37,6 +36,5 @@ public class CrouchState : State<Member>
     public override void Exit()
     {
         base.Exit();
-        if(!Runner.model.isCrouching) Runner.animationHandler.animator.SetBool(_crouchParam,false);
     }
 }

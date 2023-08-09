@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1659dea5a85942cdb0b28c658607aece, type: 3}
   m_Name: Harum
   m_EditorClassIdentifier: 
+  id: 5e244cda-372a-49ba-86d8-b98fa82050fc
   unitName: Harum
   unitDescription: 
   portrait: {fileID: 21300000, guid: ee8c48016f9ef55409b04964e0bab558, type: 3}

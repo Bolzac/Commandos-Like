@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class TeamManagement : Child
+public class TeamManagement : Child, IDataPersistence
 {
     [SerializeField] private UnityEvent<Member[]> onInit;
     [SerializeField] private UnityEvent<Member> onMainMemberChanges;
@@ -22,7 +22,8 @@ public class TeamManagement : Child
             members[i].index = i;
             members[i].isMain = false;
         }
-        SelectOneUnit(0);
+
+        SelectOneUnit(!mainMember ? 0 : mainMember.index);
     }
 
     public void SelectMultipleUnit(int[] indexes)
@@ -67,5 +68,15 @@ public class TeamManagement : Child
             selectedUnit.controller.VisualizeSelected(false);
         }
         selectedUnits.Clear();
+    }
+
+    public void LoadData(GameData data)
+    {
+        mainMember = data.mainMember;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.mainMember = mainMember;
     }
 }

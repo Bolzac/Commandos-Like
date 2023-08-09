@@ -13,12 +13,12 @@ public class WalkState : State<Member>
     {
         base.Enter();
         Runner.agent.speed = walkingSpeed;
+        Runner.animationHandler.SetPatrolBlend(walkingSpeed);
     }
 
     public override void Update()
     {
         base.Update();
-        Runner.animationHandler.SetPatrolBlend(Runner.agent.velocity.magnitude);
     }
 
     public override void ChangeState()

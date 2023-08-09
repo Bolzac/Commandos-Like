@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,6 +8,8 @@ public class InputVariables : MonoBehaviour
 
     public bool drag;
     public bool turn;
+
+    public bool isPaused;
 
     public UnityEvent onCrouchEvent;
 }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class TeamController : MonoBehaviour
 {
@@ -90,15 +89,5 @@ public class TeamController : MonoBehaviour
     public void EnableSkill(int index)
     {
         teamManagement.selectedUnits[0].controller.SetReadySkill(index);
-    }
-
-    private void OnDrawGizmos()
-    {
-        if(points.Count == 0) return;
-        foreach (var point in points)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(point,0.3f);
-        }
     }
 }
