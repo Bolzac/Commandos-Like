@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -7,7 +6,7 @@ using UnityEngine.Serialization;
 public class MemberController : MonoBehaviour
 {
     [FormerlySerializedAs("unit")] public Member member;
-
+    
     private Collider[] _results = new Collider[4];
     private int _size;
     private readonly int _crouch = Animator.StringToHash("Crouch");
@@ -29,6 +28,7 @@ public class MemberController : MonoBehaviour
 
     public IEnumerator Interaction(IInteraction interaction)
     {
+        if (!member.animationHandler.IsActionDone()) yield break;
         yield return null;
         if (interaction.TryGetComponent(out NavMeshAgent agent) && agent.velocity.magnitude > 0)
         {
@@ -47,7 +47,6 @@ public class MemberController : MonoBehaviour
         }
         member.agent.ResetPath();
         if(member.model.isCrouching) StandUp();
-        member.model.isInteractedWithSomething = true;
         interaction.Interaction(member);
     }
 
@@ -88,11 +87,6 @@ public class MemberController : MonoBehaviour
     {
         member.model.readySkill = null;
         member.stateManager.SetState(typeof(IdleState));
-    }
-
-    public void SetFalseIsInteracted()
-    {
-        member.model.isInteractedWithSomething = false;
     }
 
     public void EnableLinkEvents()

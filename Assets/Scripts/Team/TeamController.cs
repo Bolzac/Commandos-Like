@@ -19,6 +19,7 @@ public class TeamController : MonoBehaviour
 
     public void StartInteraction(IInteraction interaction)
     {
+        if(!teamManagement.mainMember.animationHandler.IsActionDone()) return;
         _coroutine = StartCoroutine(teamManagement.mainMember.controller.Interaction(interaction));
     }
 
@@ -29,6 +30,7 @@ public class TeamController : MonoBehaviour
 
     public void AssignDestinations(Vector3 destination)
     {
+        if(!teamManagement.mainMember.animationHandler.IsActionDone()) return;
         _size = teamManagement.selectedUnits.Count;
         if (_size == 1)
         {
@@ -88,6 +90,7 @@ public class TeamController : MonoBehaviour
 
     public void EnableSkill(int index)
     {
+        if(!teamManagement.mainMember.animationHandler.IsActionDone()) return;
         teamManagement.selectedUnits[0].controller.SetReadySkill(index);
     }
 }

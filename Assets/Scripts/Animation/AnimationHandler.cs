@@ -40,4 +40,9 @@ public class AnimationHandler : MonoBehaviour
             transform.parent.position = transform.position + animator.deltaPosition;
         }
     }
+
+    public bool IsActionDone()
+    {
+        return !animator.GetBool(_onAction);
+    }
 }

@@ -1,8 +1,14 @@
+using System;
+using System.Collections;
+using Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
-public class CameraController : Child
+public class CameraController : MonoBehaviour
 {
+    #region OldSystem
+    /*
+    
     [SerializeField] private InputVariables inputModel;
     
     private Transform _transform;
@@ -53,4 +59,37 @@ public class CameraController : Child
         
         cam.localPosition = _temp;
     }
+    */
+    
+    #endregion
+
+    #region NewSystem
+
+    [Header("New System")] 
+    public InputVariables inputModel;
+    
+    [Header("Camera Properties")]
+    public CinemachineVirtualCamera virtualCamera;
+
+    [Header("Camera Methods")] 
+    [SerializeField] private ZoomCamera zoomCamera;
+    [SerializeField] private MoveCamera moveCamera;
+    [SerializeField] private TurnCamera turnCamera;
+    private IEnumerator Start()
+    {
+        var cam = Camera.main;
+        var brain = (cam == null) ? null : cam.GetComponent<CinemachineBrain>();
+        yield return null;
+        virtualCamera = (brain == null) ? null : brain.ActiveVirtualCamera as CinemachineVirtualCamera;
+        yield return null;
+    }
+
+    public void HandleCameraLocomotion()
+    {
+        moveCamera.MoveCam(inputModel,transform);
+        zoomCamera.Zoom(inputModel,virtualCamera);
+        turnCamera.TurnCam(inputModel,transform);
+    }
+
+    #endregion
 }

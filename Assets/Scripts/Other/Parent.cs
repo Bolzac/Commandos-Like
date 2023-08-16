@@ -14,6 +14,5 @@ public class Parent : MonoBehaviour
         teamManagement.gameObject.SetActive(true);
         
         teamManagement.Init(this);
-        cameraController.Init(this);
     }
 }

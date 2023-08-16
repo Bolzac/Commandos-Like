@@ -7,7 +7,6 @@ public class MemberModel : MonoBehaviour, IDataPersistence
 
     public bool isRunning;
     public bool isCrouching;
-    public bool isInteractedWithSomething;
     public GameObject selection;
 
     public Transform soundSource;
