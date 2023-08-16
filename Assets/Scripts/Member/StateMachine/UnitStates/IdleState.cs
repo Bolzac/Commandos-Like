@@ -11,7 +11,10 @@ public class IdleState : State<Member>
     public override void Enter()
     {
         base.Enter();
-        if(Runner.animationHandler.animator) Runner.animationHandler.SetPatrolBlend(0);
+        if (Runner.animationHandler.animator)
+        {
+            Runner.animationHandler.SetPatrolBlend(0);
+        }
     }
 
     public override void Update()

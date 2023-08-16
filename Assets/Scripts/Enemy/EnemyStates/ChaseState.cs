@@ -16,6 +16,7 @@ public class ChaseState : State<Enemy>
         Runner.agent.speed = Runner.model.runningSpeed;
         _temp = Runner.model.suspiciousLocation.position;
         Runner.agent.SetDestination(_temp);
+        Runner.animationHandler.SetPatrolBlend(Runner.model.runningSpeed);
     }
 
     public override void Update()

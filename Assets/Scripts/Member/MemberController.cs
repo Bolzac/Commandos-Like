@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,6 +11,11 @@ public class MemberController : MonoBehaviour
     private Collider[] _results = new Collider[4];
     private int _size;
     private readonly int _crouch = Animator.StringToHash("Crouch");
+
+    private void Start()
+    {
+        EnableLinkEvents();
+    }
 
     public void VisualizeSelected(bool isSelected)
     {
@@ -87,5 +93,22 @@ public class MemberController : MonoBehaviour
     public void SetFalseIsInteracted()
     {
         member.model.isInteractedWithSomething = false;
+    }
+
+    public void EnableLinkEvents()
+    {
+        member.agentLinkMover.onLinkStarts += OnLinkStarts;
+        member.agentLinkMover.onLinkEnds += OnLinkEnds;
+    }
+
+    private void OnLinkEnds(Vector3 lookPos)
+    {
+        member.stateManager.SetState(typeof(IdleState));
+    }
+
+    private void OnLinkStarts(Vector3 lookPos)
+    {
+        transform.LookAt(lookPos);
+        member.stateManager.SetState(typeof(JumpState));
     }
 }

@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stealthKill: StruggleFromBehind
   stealthDie: DieByStruggle
-  stealthAnimDistance: 1.5
+  stealthAnimDistance: 1.7

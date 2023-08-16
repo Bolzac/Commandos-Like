@@ -5,10 +5,11 @@ using UnityEngine.Serialization;
 
 public class UnitStateManager : MonoBehaviour
 {
-    [FormerlySerializedAs("unit")] public Member member;
+    public Member member;
     public List<State<Member>> states;
     private Dictionary<Type, State<Member>> _statesByTypes;
     public State<Member> currentState;
+    public State<Member> previousState;
 
     private void Awake()
     {
@@ -27,9 +28,15 @@ public class UnitStateManager : MonoBehaviour
         if (currentState)
         {
             currentState.Exit();
+            previousState = currentState;
         }
         currentState = _statesByTypes[var];
         currentState.Enter();
+    }
+
+    public void BackToPrevious()
+    {
+        SetState(previousState.GetType());
     }
 
     private void Update()

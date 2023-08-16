@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Events;
 
 [Serializable]
@@ -11,25 +12,24 @@ public class SingleSelector
     public UnityEvent<Vector3> onSelectedDestination;
     public UnityEvent<IInteraction> onSelectedInteraction;
 
+    [SerializeField] private LayerMask layers;
+
+    [Obsolete("Obsolete")]
     public void SingleSelection()
     {
         var ray = cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity))
+        if (Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity,layers))
         {
             if (hit.transform.TryGetComponent(out Member unit))
             {
                 onSelectedOneUnit?.Invoke(unit.index); //TeamManagement.SelectOneUnit
             }
-            else
+            else if(hit.transform.TryGetComponent(out IInteraction interact))
             {
-                if (hit.transform.CompareTag("Ground"))
-                {
-                    onSelectedDestination?.Invoke(hit.point); //TeamController.StopInteraction - TeamController.AssignDestinations
-                }
-                else if(hit.transform.TryGetComponent(out IInteraction interact))
-                {
-                    onSelectedInteraction?.Invoke(interact); //TeamController.StartInteraction
-                }
+                onSelectedInteraction?.Invoke(interact); //TeamController.StartInteraction
+            }else if (NavMesh.SamplePosition(hit.point,out NavMeshHit navMeshHit,0.2f,NavMesh.GetNavMeshLayerFromName("Ground")))
+            {
+                onSelectedDestination?.Invoke(navMeshHit.position); //TeamController.StopInteraction - TeamController.AssignDestinations
             }
         }
     }

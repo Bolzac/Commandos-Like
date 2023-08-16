@@ -12,6 +12,6 @@ public class PauseMenuHandler : MonoBehaviour
 
     public void BackToMainMenu()
     {
-        GameManager.Instance.SetState(typeof(MainMenuState));
+        GameManager.Instance.levelManager.LoadScene("MainMenu");
     }
 }

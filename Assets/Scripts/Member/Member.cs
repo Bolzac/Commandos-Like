@@ -7,12 +7,14 @@ public class Member : MonoBehaviour
     public bool isMain;
     public UnitStateManager stateManager;
     public NavMeshAgent agent;
+    public AgentLinkMover agentLinkMover;
     public AnimationHandler animationHandler;
     public MemberModel model;
     public MemberController controller;
 
     private void Awake()
     {
+        agentLinkMover = GetComponent<AgentLinkMover>();
         model = GetComponent<MemberModel>();
     }
 }

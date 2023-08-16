@@ -26,11 +26,6 @@ public class Enemy : IInteraction, IDataPersistence
         enemyStateMachine = GetComponent<EnemyStateManager>();
     }
 
-    private void Update()
-    {
-        animationHandler.SetPatrolBlend(agent.velocity.magnitude);
-    }
-
     public override void Interaction(Member member)
     {
         controller.Die(member);

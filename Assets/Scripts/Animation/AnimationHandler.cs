@@ -25,11 +25,19 @@ public class AnimationHandler : MonoBehaviour
 
     public void SetPatrolBlend(float speed)
     {
-        if(!animator.GetBool(_onAction)) animator.SetFloat(_speed,speed);
+        animator.SetFloat(_speed,speed);
     }
 
     public void SetActionOff()
     {
         animator.SetBool(_onAction,false);
+    }
+
+    private void OnAnimatorMove()
+    {
+        if (animator.rootPosition != transform.parent.position)
+        {
+            transform.parent.position = transform.position + animator.deltaPosition;
+        }
     }
 }

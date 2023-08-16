@@ -40,16 +40,19 @@ public class PatrolState : State<Enemy>
     {
         base.Exit();
         Runner.StopAllCoroutines();
+        Runner.animationHandler.SetPatrolBlend(0);
     }
 
     private IEnumerator Patrol()
     {
         while (true)
         {
+            Runner.animationHandler.SetPatrolBlend(0);
             yield return new WaitForSeconds(waitDuration);
             Runner.agent.SetDestination(Runner.model.waypoints[waypointOrder].position);
             yield return new WaitForSeconds(0.1f);
-            yield return new WaitUntil(() => Runner.agent.remainingDistance < destinationThreshold);
+            Runner.animationHandler.SetPatrolBlend(Runner.model.walkingSpeed);
+            yield return new WaitUntil(() => Runner.agent.pathEndPosition == Runner.transform.position);
 
             if (isLooping)
             {

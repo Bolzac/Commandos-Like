@@ -13,10 +13,9 @@ public class DeadState : State<Enemy>
     public override void Enter()
     {
         base.Enter();
-        Runner.agent.ResetPath();
+        Runner.agent.enabled = false;
         Runner.model.capsuleCollider.enabled = false;
         Runner.fov.gameObject.SetActive(false);
-        Runner.agent.enabled = false;
     }
 
     public override void Update()
