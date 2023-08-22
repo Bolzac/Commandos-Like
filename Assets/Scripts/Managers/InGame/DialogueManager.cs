@@ -40,6 +40,7 @@ public class DialogueManager : MonoBehaviour
     public void StartDialogue(TextAsset dialogue, Member member)
     {
         onEnteringDialogue.Invoke(typeof(DialogueState));
+        TeamManagement.Instance.SelectOneUnit(member.index);
 
         _speakerMember = member;
         unitSprite.sprite = _speakerMember.model.info.portrait;

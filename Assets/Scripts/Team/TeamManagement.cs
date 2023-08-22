@@ -1,47 +1,44 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class TeamManagement : Child, IDataPersistence
+public class TeamManagement : MonoBehaviour
 {
-    [SerializeField] private UnityEvent<Member[]> onInit;
-    [SerializeField] private UnityEvent<Member> onMainMemberChanges;
+    public static TeamManagement Instance;
 
     public Member[] members;
     public List<Member> selectedUnits;
-    public Member mainMember;
+    public event Action<Member> OnMemberChanged;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
         members = transform.GetComponentsInChildren<Member>();
+
+        foreach (Member mem in members)
+        {
+            mem.OnSelect += selectable => selectable.Select();
+        }
         
-        onInit.Invoke(members);
+        SelectOneUnit(members[0].index);
         
         for (var i = 0; i < members.Length; i++)
         {
             members[i].index = i;
-            members[i].isMain = false;
         }
-
-        SelectOneUnit(!mainMember ? 0 : mainMember.index);
     }
 
     public void SelectMultipleUnit(int[] indexes)
     {
+        ClearAllSelected();
         foreach (var index in indexes)
         {
-            if(selectedUnits.Contains(members[index])) continue;
-            
             selectedUnits.Add(members[index]);
             members[index].controller.VisualizeSelected(true);
-        }
-
-        if (selectedUnits.Count > 0 && mainMember != selectedUnits[0])
-        {
-            mainMember = selectedUnits[0];
-            mainMember.isMain = true;
-            for (int i = 1; i < members.Length; i++) { members[i].isMain = false; }
-            onMainMemberChanges.Invoke(mainMember);
         }
     }
 
@@ -52,16 +49,12 @@ public class TeamManagement : Child, IDataPersistence
         ClearAllSelected();
         
         selectedUnits.Add(members[index]);
-
-        if (mainMember) mainMember.isMain = false;
         
-        mainMember = selectedUnits[0];
-        mainMember.isMain = true;
-        mainMember.controller.VisualizeSelected(true);
-        onMainMemberChanges.Invoke(mainMember);
+        selectedUnits[0].controller.VisualizeSelected(true);
+        OnMemberChanged?.Invoke(selectedUnits[0]);
     }
 
-    public void ClearAllSelected()
+    private void ClearAllSelected()
     {
         foreach (var selectedUnit in selectedUnits)
         {
@@ -70,13 +63,4 @@ public class TeamManagement : Child, IDataPersistence
         selectedUnits.Clear();
     }
 
-    public void LoadData(GameData data)
-    {
-        mainMember = data.mainMember;
-    }
-
-    public void SaveData(ref GameData data)
-    {
-        data.mainMember = mainMember;
-    }
 }

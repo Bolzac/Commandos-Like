@@ -9,10 +9,17 @@ public class UIManager : MonoBehaviour
     public DialogueBoxHandler dialogueBoxHandler;
     public PausePanelHandler pausePanelHandler;
 
-    public void InitCharacterPanel(Member[] members)
+    private void Awake()
     {
-        characterPanelHandler.InitPanel(members);
+        TeamManagement.Instance.OnMemberChanged += SetSkills;
     }
+
+    private void Start()
+    {
+        InitCharacterPanel(TeamManagement.Instance.members);
+    }
+
+    private void InitCharacterPanel(Member[] members) { characterPanelHandler.InitPanel(members); }
 
     public void SetSkills(Member member) { skillPanelHandler.SetSkills(member); }
 

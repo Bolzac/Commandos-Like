@@ -792,6 +792,7 @@ GameObject:
   - component: {fileID: 2772598451406157585}
   - component: {fileID: 853218572846710836}
   - component: {fileID: 1515853356705677804}
+  - component: {fileID: 1696124917174075447}
   m_Layer: 7
   m_Name: Vargoth
   m_TagString: Unit
@@ -829,8 +830,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d729347d524d1440b9481e3065ede79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teamManagement: {fileID: 0}
   index: 0
-  isMain: 0
   stateManager: {fileID: 2772598451406157585}
   agent: {fileID: 7350222726916221636}
   agentLinkMover: {fileID: 0}
@@ -941,6 +942,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d40a01533c96ad04695050b29acc0714, type: 2}
   - {fileID: 11400000, guid: 4508f64d6880e7744b90f46203287854, type: 2}
   - {fileID: 11400000, guid: 5d78e81adc533b24e8184d63da5c119d, type: 2}
+  - {fileID: 11400000, guid: 13ce5a5035967dd4bb6b82580cf16577, type: 2}
   currentState: {fileID: 0}
   previousState: {fileID: 0}
 --- !u!114 &853218572846710836
@@ -959,10 +961,7 @@ MonoBehaviour:
   readySkill: {fileID: 0}
   isRunning: 0
   isCrouching: 0
-  isInteractedWithSomething: 0
-  selection: {fileID: 7830666082709454526}
-  soundSource: {fileID: 2946522246314806036}
-  runningNoiseRadius: 0
+  selectedVisual: {fileID: 7830666082709454526}
 --- !u!114 &1515853356705677804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -983,6 +982,24 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1696124917174075447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3750138798060787541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &3782686520452370270
 GameObject:
   m_ObjectHideFlags: 0

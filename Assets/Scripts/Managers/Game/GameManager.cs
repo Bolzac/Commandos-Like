@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    [Header("SubManagers")] 
+    public bool isOverUI;
+    public float waitTime;
+
+    [Header("SubManagers")]
     public LevelManager levelManager;
     public SoundManager soundManager;
 
@@ -20,5 +24,19 @@ public class GameManager : MonoBehaviour
 
         levelManager = GetComponentInChildren<LevelManager>();
         soundManager = GetComponentInChildren<SoundManager>();
+    }
+
+    private void Start()
+    {
+        StartCoroutine(CheckForOverUI());
+    }
+
+    private IEnumerator CheckForOverUI()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(waitTime);
+            isOverUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+        }
     }
 }

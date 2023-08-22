@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "Unit/Info")]
 public class MemberInfo : ScriptableObject
@@ -11,9 +12,14 @@ public class MemberInfo : ScriptableObject
         id = System.Guid.NewGuid().ToString();
     }
     
-    public string unitName;
-    [TextArea] public string unitDescription;
+    [Header("Personal Information")]
+    public string memberName;
+    [TextArea] public string memberDescription;
     public Sprite portrait;
+    
+    [Header("Abilities")]
     public SkillBase[] skills;
+    
+    [Header("Animation")] [Tooltip("It stands for animation names. We are saving member's animation and its affect animation")]
     public AnimationModel animationModel;
 }

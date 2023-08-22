@@ -5,23 +5,26 @@ using UnityEngine.Events;
 [Serializable]
 public class PlayState : InGameBaseState
 {
-    public UnityEvent onEnterPlayState;
-    public UnityEvent onExitPlayState;
     public UnityEvent onUpdatePlayState;
 
     public override void Enter()
     {
         Time.timeScale = 1;
-        onEnterPlayState?.Invoke(); // Enable UI and Inputs
+        runner.uiManager.StartPlayUI();
+        runner.inputManager.EnablePlay();
+        runner.animator.Play("IsometricFreeCamera");
     }
 
     public override void Update()
     {
+        if(GameManager.Instance.isOverUI) return; 
+        runner.selectionManager.ObserveMouseBehaviour();
         onUpdatePlayState.Invoke();
     }
 
     public override void Exit()
     {
-        onExitPlayState?.Invoke(); //Disable UI and Inputs
+        runner.uiManager.ExitPlayUI();
+        runner.inputManager.DisablePlay();
     }
 }

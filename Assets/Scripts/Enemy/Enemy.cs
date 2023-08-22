@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : IInteraction, IDataPersistence
+public class Enemy : Interactable, IDataPersistence
 {
     public Camera cam;
     public AnimationHandler animationHandler;
@@ -12,8 +12,9 @@ public class Enemy : IInteraction, IDataPersistence
     public EnemyController controller;
     public EnemyView view;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         animationHandler = transform.GetChild(0).GetComponent<AnimationHandler>();
         agent = GetComponent<NavMeshAgent>();
         model = GetComponent<EnemyModel>();

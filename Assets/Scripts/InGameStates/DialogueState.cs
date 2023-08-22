@@ -4,11 +4,10 @@ using UnityEngine.Events;
 [Serializable]
 public class DialogueState : InGameBaseState
 {
-    public UnityEvent onEnterDialogueState;
-    public UnityEvent onExitDialogueState;
     public override void Enter()
     {
-        onEnterDialogueState?.Invoke();
+        runner.uiManager.StartDialogueUI();
+        runner.animator.Play("DialogueCamera");
     }
 
     public override void Update()
@@ -18,6 +17,6 @@ public class DialogueState : InGameBaseState
 
     public override void Exit()
     {
-        onExitDialogueState?.Invoke();
+        runner.uiManager.ExitDialogueUI();
     }
 }

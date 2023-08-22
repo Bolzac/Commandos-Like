@@ -10,27 +10,16 @@ public class TeamController : MonoBehaviour
     [HideInInspector] public List<Vector3> points;
     
     public float destinationRadius;
-    private Coroutine _coroutine;
 
-    private void Awake()
+    private void Start()
     {
         teamManagement = GetComponent<TeamManagement>();
-    }
 
-    public void StartInteraction(IInteraction interaction)
-    {
-        if(!teamManagement.mainMember.animationHandler.IsActionDone()) return;
-        _coroutine = StartCoroutine(teamManagement.mainMember.controller.Interaction(interaction));
-    }
-
-    public void StopInteraction()
-    {
-        if(_coroutine != null) StopCoroutine(_coroutine);
+        FindObjectOfType<InGameManager>().selectionManager.destinationSelection.OnSelect += AssignDestinations;
     }
 
     public void AssignDestinations(Vector3 destination)
     {
-        if(!teamManagement.mainMember.animationHandler.IsActionDone()) return;
         _size = teamManagement.selectedUnits.Count;
         if (_size == 1)
         {
@@ -42,7 +31,7 @@ public class TeamController : MonoBehaviour
             points.Clear();
             for (int i = 0; i < _size; i++)
             {
-                var dest = new Vector3(destination.x + destinationRadius * Mathf.Cos(_angle * i * Mathf.PI/180), 0, destination.z + destinationRadius * Mathf.Sin(_angle * i * Mathf.PI/180));
+                var dest = new Vector3(destination.x + destinationRadius * Mathf.Cos(_angle * i * Mathf.PI/180), destination.y, destination.z + destinationRadius * Mathf.Sin(_angle * i * Mathf.PI/180));
                 points.Add(dest);
                 teamManagement.selectedUnits[i].controller.Move(dest);
             }
@@ -90,7 +79,6 @@ public class TeamController : MonoBehaviour
 
     public void EnableSkill(int index)
     {
-        if(!teamManagement.mainMember.animationHandler.IsActionDone()) return;
         teamManagement.selectedUnits[0].controller.SetReadySkill(index);
     }
 }

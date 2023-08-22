@@ -5,5 +5,4 @@ public class AnimationModel : ScriptableObject
 {
     public string stealthKill;
     public string stealthDie;
-    public float stealthAnimDistance;
 }

@@ -12,4 +12,6 @@ public class InputVariables : MonoBehaviour
     public bool isPaused;
 
     public UnityEvent onCrouchEvent;
+    public UnityEvent onDoubleClick;
+    public UnityEvent onOneClick;
 }

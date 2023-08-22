@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -5,11 +6,17 @@ using UnityEngine.Serialization;
 
 public class MemberController : MonoBehaviour
 {
-    [FormerlySerializedAs("unit")] public Member member;
+    public Member member;
     
     private Collider[] _results = new Collider[4];
     private int _size;
     private readonly int _crouch = Animator.StringToHash("Crouch");
+    private Coroutine _interactionCoroutine;
+
+    private void Awake()
+    {
+        member = GetComponent<Member>();
+    }
 
     private void Start()
     {
@@ -18,7 +25,9 @@ public class MemberController : MonoBehaviour
 
     public void VisualizeSelected(bool isSelected)
     {
-        member.model.selection.SetActive(isSelected);
+        member.model.selectedVisual.SetActive(isSelected);
+        member.SetClicked(isSelected);
+        member.SetOutline(isSelected);
     }
 
     public void Move(Vector3 destination)
@@ -26,7 +35,22 @@ public class MemberController : MonoBehaviour
         member.agent.SetDestination(destination);
     }
 
-    public IEnumerator Interaction(IInteraction interaction)
+    public void StartInteraction(Interactable interaction)
+    {
+        _interactionCoroutine = StartCoroutine(HandleInteraction(interaction));
+    }
+
+    public void StopInteraction()
+    {
+        if(_interactionCoroutine != null) StopCoroutine(_interactionCoroutine);
+    }
+
+    public bool IsInteracting()
+    {
+        return _interactionCoroutine != null;
+    }
+
+    private IEnumerator HandleInteraction(Interactable interaction)
     {
         if (!member.animationHandler.IsActionDone()) yield break;
         yield return null;
@@ -36,16 +60,15 @@ public class MemberController : MonoBehaviour
             {
                 yield return new WaitForSeconds(0.1f);
                 Move(interaction.transform.position);
-                if(interaction.distanceThreshold >= member.agent.remainingDistance) break;
+                if(member.agent.pathEndPosition == member.transform.position) break;
             }
         }
         else
         {
             Move(interaction.transform.position);
             yield return new WaitForSeconds(0.1f);
-            yield return new WaitUntil(() => interaction.distanceThreshold >= member.agent.remainingDistance);   
+            yield return new WaitUntil(() => member.agent.pathEndPosition == member.transform.position);
         }
-        member.agent.ResetPath();
         if(member.model.isCrouching) StandUp();
         interaction.Interaction(member);
     }
@@ -61,20 +84,6 @@ public class MemberController : MonoBehaviour
     {
         member.animationHandler.animator.SetBool(_crouch,false);
         member.model.isCrouching = false;
-    }
-
-    public void CreateNoise()
-    {
-        _size = Physics.OverlapSphereNonAlloc(transform.position, member.model.runningNoiseRadius, _results
-            /*Parent.Instance.team.teamModel.enemyLayer*/);
-        if (_size > 0)
-        {
-            member.model.soundSource.position = transform.position;
-            for (var i = 0; i < _size; i++)
-            {
-                _results[i].GetComponent<EnemyController>().ReactSound(member.model.soundSource);
-            }
-        }
     }
 
     public void SetReadySkill(int index)

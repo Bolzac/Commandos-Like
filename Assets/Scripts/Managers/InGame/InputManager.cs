@@ -78,16 +78,28 @@ public class InputManager : MonoBehaviour
         private void EnableMemberInputs()
         {
             _inputs.MemberAction.Crouch.performed += HandleCrouch;
+            _inputs.MemberAction.DisableRun.performed += DisableRun;
+            _inputs.MemberAction.EnableRun.performed += EnableRun;
             _inputs.MemberAction.Enable();
         }
     
         private void DisableMemberInputs()
         {
             _inputs.MemberAction.Crouch.performed -= HandleCrouch;
+            _inputs.MemberAction.EnableRun.performed -= EnableRun;
+            _inputs.MemberAction.DisableRun.performed -= DisableRun;
             _inputs.MemberAction.Disable();
         }
         
         private void HandleCrouch(InputAction.CallbackContext i) { inputModel.onCrouchEvent.Invoke(); }
+
+        private void EnableRun(InputAction.CallbackContext i) { inputModel.onDoubleClick.Invoke(); }
+
+        private void DisableRun(InputAction.CallbackContext i)
+        {
+            inputModel.onOneClick.Invoke();
+            if(TeamManagement.Instance.selectedUnits[0].controller.IsInteracting()) TeamManagement.Instance.selectedUnits[0].controller.StopInteraction(); 
+        }
 
     #endregion
 

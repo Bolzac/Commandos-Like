@@ -2576,6 +2576,7 @@ GameObject:
   - component: {fileID: 6644926475431166396}
   - component: {fileID: 4492686709899969277}
   - component: {fileID: 339573155395359563}
+  - component: {fileID: 7808417073857920471}
   m_Layer: 7
   m_Name: Corvo
   m_TagString: Unit
@@ -2613,8 +2614,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d729347d524d1440b9481e3065ede79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teamManagement: {fileID: 0}
   index: 0
-  isMain: 0
   stateManager: {fileID: 6644926475431166396}
   agent: {fileID: 1918487283011327674}
   agentLinkMover: {fileID: 0}
@@ -2725,6 +2726,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4a55a521dda45e840a6ff853a9b1c59a, type: 2}
   - {fileID: 11400000, guid: 13072d7d03729ac41b6f6c15a04a6c43, type: 2}
   - {fileID: 11400000, guid: 420e6f0b699ffdb4891439ecddda5fb8, type: 2}
+  - {fileID: 11400000, guid: 5cc5e757e1390524c9445b444708dbfc, type: 2}
   currentState: {fileID: 0}
   previousState: {fileID: 0}
 --- !u!114 &4492686709899969277
@@ -2743,10 +2745,7 @@ MonoBehaviour:
   readySkill: {fileID: 0}
   isRunning: 0
   isCrouching: 0
-  isInteractedWithSomething: 0
-  selection: {fileID: 118712427168294818}
-  soundSource: {fileID: 6012477329763725196}
-  runningNoiseRadius: 0
+  selectedVisual: {fileID: 118712427168294818}
 --- !u!114 &339573155395359563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2767,3 +2766,21 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7808417073857920471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9196022678148958569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

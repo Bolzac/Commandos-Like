@@ -1,5 +1,61 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &763848914227342650
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2285279424087928141}
+  - component: {fileID: 8863008763371529883}
+  m_Layer: 0
+  m_Name: SelectionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2285279424087928141
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763848914227342650}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -9.558517, y: -29.999569, z: 20.03978}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2239933555422137860}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8863008763371529883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763848914227342650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d13d32f6f96041649aef93f38d206710, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destinationSelection:
+    cam: {fileID: 0}
+    layers:
+      serializedVersion: 2
+      m_Bits: 2001
+  multipleMemberSelection:
+    cam: {fileID: 0}
+    visualBox: {fileID: 0}
+    sizeThreshold: 100
+    isDragging: 0
+    offsetY: 1
+    increment: 0.5
 --- !u!1 &910605282489182217
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,12 +86,12 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2814980388634686484}
-  - {fileID: 1005095712187539093}
   - {fileID: 6008812521092548209}
   - {fileID: 1616119971232386746}
   - {fileID: 1257069698123561216}
+  - {fileID: 2285279424087928141}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8813055068720440161
 MonoBehaviour:
@@ -49,69 +105,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfe5d9ebd3af1ad4ab8cbcf16988445c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 0}
   canvas: {fileID: 0}
   playState:
-    onEnterPlayState:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5889338362726115787}
-          m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-          m_MethodName: StartPlayUI
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 3168564897793652509}
-          m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
-          m_MethodName: EnablePlay
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    onExitPlayState:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5889338362726115787}
-          m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-          m_MethodName: ExitPlayUI
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 3168564897793652509}
-          m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
-          m_MethodName: DisablePlay
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
     onUpdatePlayState:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1495675169055072799}
-          m_TargetAssemblyTypeName: SelectionManager, Assembly-CSharp
-          m_MethodName: CountClicks
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+          m_MethodName: HandleCameraLocomotion
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -121,80 +122,9 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 1495675169055072799}
-          m_TargetAssemblyTypeName: SelectionManager, Assembly-CSharp
-          m_MethodName: Selection
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  pauseState:
-    onEnterPauseState:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5889338362726115787}
-          m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-          m_MethodName: StartPauseUI
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    onExitPauseState:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5889338362726115787}
-          m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-          m_MethodName: ExitPauseUI
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  dialogueState:
-    onEnterDialogueState:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5889338362726115787}
-          m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-          m_MethodName: StartDialogueUI
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    onExitDialogueState:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5889338362726115787}
-          m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-          m_MethodName: ExitDialogueUI
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  inputManager: {fileID: 0}
+  uiManager: {fileID: 0}
+  selectionManager: {fileID: 0}
 --- !u!1 &1765042614041823264
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,226 +225,6 @@ MonoBehaviour:
     dialoguePanel: {fileID: 0}
   pausePanelHandler:
     pausePanel: {fileID: 0}
---- !u!1 &4651620789455796940
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1005095712187539093}
-  - component: {fileID: 1495675169055072799}
-  m_Layer: 0
-  m_Name: SelectionManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1005095712187539093
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4651620789455796940}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -16}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2239933555422137860}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1495675169055072799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4651620789455796940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1dbb04bf868f73c4db175a07ff98749e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clicker:
-    onOneClick:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: TeamController, Assembly-CSharp
-          m_MethodName: DisableRunning
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    onDoubleClick:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: TeamController, Assembly-CSharp
-          m_MethodName: HandleRunning
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    clickSpacing: 0.5
-  multipleSelector:
-    onSelectOneUnit:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: TeamManagement, Assembly-CSharp
-          m_MethodName: SelectOneUnit
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    onSelectMultipleUnit:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: TeamManagement, Assembly-CSharp
-          m_MethodName: SelectMultipleUnit
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    onClear:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: TeamManagement, Assembly-CSharp
-          m_MethodName: ClearAllSelected
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    unitLayer:
-      serializedVersion: 2
-      m_Bits: 128
-  cursorToWorld:
-    cam: {fileID: 0}
-    groundLayer:
-      serializedVersion: 2
-      m_Bits: 512
-  singleSelector:
-    cam: {fileID: 0}
-    onSelectedOneUnit:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: TeamManagement, Assembly-CSharp
-          m_MethodName: SelectOneUnit
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    onSelectedDestination:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: TeamController, Assembly-CSharp
-          m_MethodName: StopInteraction
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: interaction
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: TeamController, Assembly-CSharp
-          m_MethodName: AssignDestinations
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    onSelectedInteraction:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: TeamController, Assembly-CSharp
-          m_MethodName: StartInteraction
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  onMultipleSelection:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5889338362726115787}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: EnableMultipleSelectionUI
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onMultipleSelectionDone:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5889338362726115787}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: DisableMultipleSelectionUI
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  sizeThreshold: 300
 --- !u!1 &5456245050032013319
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,4 +402,16 @@ MonoBehaviour:
   isPaused: 0
   onCrouchEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: TeamController, Assembly-CSharp
+        m_MethodName: ToggleCrouchUnits
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

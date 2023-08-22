@@ -1,10 +1,9 @@
-using UnityEngine;
 using UnityEngine.AI;
 
-public class Member : MonoBehaviour
+public class Member : SelectableMember
 {
+    public TeamManagement teamManagement;
     public int index;
-    public bool isMain;
     public UnitStateManager stateManager;
     public NavMeshAgent agent;
     public AgentLinkMover agentLinkMover;
@@ -12,9 +11,16 @@ public class Member : MonoBehaviour
     public MemberModel model;
     public MemberController controller;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         agentLinkMover = GetComponent<AgentLinkMover>();
         model = GetComponent<MemberModel>();
+        teamManagement = transform.parent.GetComponent<TeamManagement>();
+    }
+
+    public override void Select()
+    {
+        teamManagement.SelectOneUnit(index);
     }
 }

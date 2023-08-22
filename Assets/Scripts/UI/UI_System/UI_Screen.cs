@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Animator))]
@@ -8,8 +9,8 @@ public class UI_Screen : MonoBehaviour
 {
     #region Variables
 
-    [Header("Main Properties")]
-    public Selectable mStartSelectable;
+    [FormerlySerializedAs("mStartSelectable")] [Header("Main Properties")]
+    public SelectableMember mStartSelectableMember;
 
     public UnityEvent onScreenStart;
     public UnityEvent onScreenClose;
@@ -24,7 +25,7 @@ public class UI_Screen : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
 
-        if (mStartSelectable) EventSystem.current.SetSelectedGameObject(mStartSelectable.gameObject);
+        if (mStartSelectableMember) EventSystem.current.SetSelectedGameObject(mStartSelectableMember.gameObject);
     }
 
     #endregion

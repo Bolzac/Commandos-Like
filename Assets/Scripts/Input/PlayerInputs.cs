@@ -123,6 +123,24 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DisableRun"",
+                    ""type"": ""Button"",
+                    ""id"": ""2c7dd204-ad82-49ca-9f3d-94b34a891f48"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EnableRun"",
+                    ""type"": ""Button"",
+                    ""id"": ""3155c688-a1e1-4cbf-8e54-8f4cbef9b31c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""MultiTap(tapDelay=0.3)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -134,6 +152,28 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cfcb23a0-5f11-4dc2-a729-c402e2b9e284"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EnableRun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1561a508-2c9b-4042-8c93-ee0ab1b67fa1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DisableRun"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -179,6 +219,8 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         // MemberAction
         m_MemberAction = asset.FindActionMap("MemberAction", throwIfNotFound: true);
         m_MemberAction_Crouch = m_MemberAction.FindAction("Crouch", throwIfNotFound: true);
+        m_MemberAction_DisableRun = m_MemberAction.FindAction("DisableRun", throwIfNotFound: true);
+        m_MemberAction_EnableRun = m_MemberAction.FindAction("EnableRun", throwIfNotFound: true);
         // StateAction
         m_StateAction = asset.FindActionMap("StateAction", throwIfNotFound: true);
         m_StateAction_Pause = m_StateAction.FindAction("Pause", throwIfNotFound: true);
@@ -314,11 +356,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_MemberAction;
     private List<IMemberActionActions> m_MemberActionActionsCallbackInterfaces = new List<IMemberActionActions>();
     private readonly InputAction m_MemberAction_Crouch;
+    private readonly InputAction m_MemberAction_DisableRun;
+    private readonly InputAction m_MemberAction_EnableRun;
     public struct MemberActionActions
     {
         private @PlayerInputs m_Wrapper;
         public MemberActionActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Crouch => m_Wrapper.m_MemberAction_Crouch;
+        public InputAction @DisableRun => m_Wrapper.m_MemberAction_DisableRun;
+        public InputAction @EnableRun => m_Wrapper.m_MemberAction_EnableRun;
         public InputActionMap Get() { return m_Wrapper.m_MemberAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -331,6 +377,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Crouch.started += instance.OnCrouch;
             @Crouch.performed += instance.OnCrouch;
             @Crouch.canceled += instance.OnCrouch;
+            @DisableRun.started += instance.OnDisableRun;
+            @DisableRun.performed += instance.OnDisableRun;
+            @DisableRun.canceled += instance.OnDisableRun;
+            @EnableRun.started += instance.OnEnableRun;
+            @EnableRun.performed += instance.OnEnableRun;
+            @EnableRun.canceled += instance.OnEnableRun;
         }
 
         private void UnregisterCallbacks(IMemberActionActions instance)
@@ -338,6 +390,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Crouch.started -= instance.OnCrouch;
             @Crouch.performed -= instance.OnCrouch;
             @Crouch.canceled -= instance.OnCrouch;
+            @DisableRun.started -= instance.OnDisableRun;
+            @DisableRun.performed -= instance.OnDisableRun;
+            @DisableRun.canceled -= instance.OnDisableRun;
+            @EnableRun.started -= instance.OnEnableRun;
+            @EnableRun.performed -= instance.OnEnableRun;
+            @EnableRun.canceled -= instance.OnEnableRun;
         }
 
         public void RemoveCallbacks(IMemberActionActions instance)
@@ -411,6 +469,8 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     public interface IMemberActionActions
     {
         void OnCrouch(InputAction.CallbackContext context);
+        void OnDisableRun(InputAction.CallbackContext context);
+        void OnEnableRun(InputAction.CallbackContext context);
     }
     public interface IStateActionActions
     {

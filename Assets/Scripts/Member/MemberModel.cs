@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class MemberModel : MonoBehaviour, IDataPersistence
 {
@@ -7,10 +8,10 @@ public class MemberModel : MonoBehaviour, IDataPersistence
 
     public bool isRunning;
     public bool isCrouching;
-    public GameObject selection;
+    public GameObject selectedVisual;
 
-    public Transform soundSource;
-    public float runningNoiseRadius;
+    #region SaveAndLoad
+
     public void LoadData(GameData data)
     {
         data.memberPositions.TryGetValue(info.id, out Vector3 position);
@@ -26,4 +27,6 @@ public class MemberModel : MonoBehaviour, IDataPersistence
         if (data.memberState.ContainsKey(info.id)) data.memberState.Remove(info.id);
         data.memberState.Add(info.id,isCrouching);
     }
+
+    #endregion
 }

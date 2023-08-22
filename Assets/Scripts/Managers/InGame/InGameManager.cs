@@ -8,7 +8,6 @@ public class InGameManager : MonoBehaviour
     
     //Tüm oynanabilir bölümlerdeki elemanlar
     [Header("Core Game Object")]
-    [SerializeField] private GameObject parent;
     [SerializeField] private GameObject canvas;
 
     #endregion
@@ -19,6 +18,16 @@ public class InGameManager : MonoBehaviour
     [SerializeField] private DialogueState dialogueState;
 
     #endregion
+
+    #region Managers
+    
+    public InputManager inputManager;
+    public UIManager uiManager;
+    public SelectionManager selectionManager;
+
+    #endregion
+
+    public Animator animator;
     
     private Dictionary<Type, InGameBaseState> _statesByTypes = new Dictionary<Type, InGameBaseState>();
     private InGameBaseState _currentState;
@@ -62,11 +71,14 @@ public class InGameManager : MonoBehaviour
         {
             child.gameObject.SetActive(true);
         }
+
+        inputManager = transform.GetComponentInChildren<InputManager>();
+        uiManager = transform.GetComponentInChildren<UIManager>();
+        selectionManager = transform.GetComponentInChildren<SelectionManager>();
     }
     
     private void InitCoreObjects()
     {
-        parent.SetActive(true);
         canvas.SetActive(true);
     }
 

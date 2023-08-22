@@ -1,71 +1,38 @@
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class SelectionManager : MonoBehaviour
 {
-    public Clicker clicker;
-    public MultipleSelector multipleSelector;
-    public CursorToWorld cursorToWorld;
-    public SingleSelector singleSelector;
+    [FormerlySerializedAs("worldSelection")] public DestinationSelection destinationSelection;
+    public MultipleMemberSelection multipleMemberSelection;
 
-    private bool isMultipleSelection;
-    public UnityEvent<Vector2,Vector2> onMultipleSelection;
-    public UnityEvent onMultipleSelectionDone;
-    
-    public float sizeThreshold;
-    
-    private Vector2 _selectionStartPos;
-    private Vector2 _selectionLastPos;
-    private Vector3 _startWorldPosition;
-    private Vector3 _endWorldPosition;
-
-    private float _selectionBoxSize;
-
-    public void CountClicks()
+    public void ObserveMouseBehaviour()
     {
-        clicker.ClickCounter();
-    }
-
-    public void Selection()
-    {
-        if(!CanSelect()) return;
-         
         if (Input.GetMouseButtonDown(0))
         {
-            _selectionStartPos = Input.mousePosition;
-            _startWorldPosition = cursorToWorld.GetMouseWorldPosition(_selectionStartPos);
+            multipleMemberSelection.SetStartPos(Input.mousePosition);
         }
 
         if (Input.GetMouseButton(0))
         {
-            _selectionLastPos = Input.mousePosition;
-            _selectionBoxSize = Mathf.Abs((_selectionStartPos.x - _selectionLastPos.x) * (_selectionStartPos.y - _selectionLastPos.y));
-            if (_selectionBoxSize > sizeThreshold)
-            {
-                isMultipleSelection = true;
-                onMultipleSelection?.Invoke(_selectionStartPos,_selectionLastPos);
-            }
+            multipleMemberSelection.SetEndPos(Input.mousePosition);
+            multipleMemberSelection.DrawVisual();
+            multipleMemberSelection.DrawSelection();
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            _endWorldPosition = cursorToWorld.GetMouseWorldPosition(_selectionLastPos);
-            if (isMultipleSelection)
+            if (multipleMemberSelection.isDragging)
             {
-                multipleSelector.MultipleSelection(_startWorldPosition,_endWorldPosition,_selectionStartPos,_selectionLastPos,cursorToWorld);
-                onMultipleSelectionDone?.Invoke();
+                multipleMemberSelection.SelectMembers();
+                multipleMemberSelection.SetStartPos(Vector2.zero);
+                multipleMemberSelection.SetEndPos(Vector2.zero);
+                multipleMemberSelection.DrawVisual();
             }
-            else if(Input.GetKey(KeyCode.LeftControl)) singleSelector.SingleSelection();
-            else singleSelector.SingleSelection();
-
-            isMultipleSelection = false;
+            else
+            {
+                destinationSelection.SelectDestination();
+            }
         }
-    }
-
-    private bool CanSelect()
-    {
-        if(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return false;
-
-        return true;
     }
 }
