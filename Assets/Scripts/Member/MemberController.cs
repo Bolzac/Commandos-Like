@@ -1,21 +1,28 @@
-using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 
 public class MemberController : MonoBehaviour
 {
     public Member member;
+
+    #region Commands
+
+    public Interaction toInteraction;
+    public MoveTo moveTo;
+    public Crouch toCrouch;
+    public StandUp toStandUp;
+
+    #endregion
     
-    private Collider[] _results = new Collider[4];
     private int _size;
-    private readonly int _crouch = Animator.StringToHash("Crouch");
-    private Coroutine _interactionCoroutine;
 
     private void Awake()
     {
         member = GetComponent<Member>();
+        toInteraction = new Interaction(member);
+        moveTo = new MoveTo(member);
+        toCrouch = new Crouch(member);
+        toStandUp = new StandUp(member);
     }
 
     private void Start()
@@ -30,72 +37,30 @@ public class MemberController : MonoBehaviour
         member.SetOutline(isSelected);
     }
 
-    public void Move(Vector3 destination)
+    public void Move(Vector3 destination, Interactable interaction = null)
     {
-        member.agent.SetDestination(destination);
+        member.commandManager.StopQueue();
+        if (interaction == null) moveTo.destination = destination;
+        else moveTo.destination = destination + interaction.interactionDistance * interaction.transform.forward;
+        member.commandManager.AddCommand(moveTo);
+    }
+
+    public void Interaction(Interactable interaction)
+    {
+        toInteraction.interactable = interaction;
+        member.commandManager.AddCommand(toInteraction);
     }
 
     public void StartInteraction(Interactable interaction)
     {
-        _interactionCoroutine = StartCoroutine(HandleInteraction(interaction));
+        Move(interaction.transform.position,interaction);
+        member.commandManager.AddCommand(toStandUp);
+        Interaction(interaction);
     }
 
-    public void StopInteraction()
+    public void StartSkill()
     {
-        if(_interactionCoroutine != null) StopCoroutine(_interactionCoroutine);
-    }
-
-    public bool IsInteracting()
-    {
-        return _interactionCoroutine != null;
-    }
-
-    private IEnumerator HandleInteraction(Interactable interaction)
-    {
-        if (!member.animationHandler.IsActionDone()) yield break;
-        yield return null;
-        if (interaction.TryGetComponent(out NavMeshAgent agent) && agent.velocity.magnitude > 0)
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(0.1f);
-                Move(interaction.transform.position);
-                if(member.agent.pathEndPosition == member.transform.position) break;
-            }
-        }
-        else
-        {
-            Move(interaction.transform.position);
-            yield return new WaitForSeconds(0.1f);
-            yield return new WaitUntil(() => member.agent.pathEndPosition == member.transform.position);
-        }
-        if(member.model.isCrouching) StandUp();
-        interaction.Interaction(member);
-    }
-
-    public void Crouch()
-    {
-        member.animationHandler.animator.SetBool(_crouch,true);
-        member.model.isRunning = false;
-        member.model.isCrouching = true;
-    }
-
-    public void StandUp()
-    {
-        member.animationHandler.animator.SetBool(_crouch,false);
-        member.model.isCrouching = false;
-    }
-
-    public void SetReadySkill(int index)
-    {
-        member.model.readySkill = member.model.info.skills[index];
-        member.stateManager.SetState(typeof(SkillReadyState));
-    }
-
-    public void DisableSkill()
-    {
-        member.model.readySkill = null;
-        member.stateManager.SetState(typeof(IdleState));
+        
     }
 
     public void EnableLinkEvents()
@@ -104,14 +69,26 @@ public class MemberController : MonoBehaviour
         member.agentLinkMover.onLinkEnds += OnLinkEnds;
     }
 
-    private void OnLinkEnds(Vector3 lookPos)
+    private void OnLinkEnds(OffMeshLink offMeshLink)
     {
+        member.animationHandler.SetActionOff();
         member.stateManager.SetState(typeof(IdleState));
     }
 
-    private void OnLinkStarts(Vector3 lookPos)
+    private void OnLinkStarts(OffMeshLink offMeshLink)
     {
-        transform.LookAt(lookPos);
-        member.stateManager.SetState(typeof(JumpState));
+        switch (offMeshLink.area)
+        {
+            case 2:
+            {
+                member.stateManager.SetState(typeof(JumpState));       
+                break;
+            }
+            case 3:
+            {
+                member.stateManager.SetState(typeof(ClimbState));
+                break;
+            }
+        }
     }
 }

@@ -12,7 +12,7 @@ public class RunState : State<Member>
     public override void Enter()
     {
         base.Enter();
-        if(Runner.model.isCrouching) Runner.controller.StandUp();
+        if(Runner.model.isCrouching) Runner.controller.toStandUp.Start();
         Runner.agent.speed = runningSpeed;
         Runner.animationHandler.SetPatrolBlend(runningSpeed);
     }

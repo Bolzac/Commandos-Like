@@ -1,13 +1,11 @@
 using UnityEngine;
 public class InteractionManager : MonoBehaviour
 {
-    private void Start()
+    private void Awake()
     {
-        Interactable[] interactables = FindObjectsOfType<Interactable>();
-
-        foreach (Interactable interactable in interactables)
+        foreach (Transform interactable in transform)
         {
-            interactable.OnInteract += HandleInteraction;
+            interactable.GetComponent<Interactable>().OnInteract += HandleInteraction;
         }
     }
         

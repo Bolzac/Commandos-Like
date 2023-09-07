@@ -4,12 +4,14 @@ using UnityEngine;
 public class TeamController : MonoBehaviour
 {
     public TeamManagement teamManagement;
-    
+
     private int _size;
     private int _angle;
     [HideInInspector] public List<Vector3> points;
     
     public float destinationRadius;
+    public GameObject destinationIndicator;
+    private Vector3 destinationPoint;
 
     private void Start()
     {
@@ -23,7 +25,8 @@ public class TeamController : MonoBehaviour
         _size = teamManagement.selectedUnits.Count;
         if (_size == 1)
         {
-            teamManagement.selectedUnits[0].controller.Move(destination);
+            destinationPoint = destination;
+            teamManagement.selectedUnits[0].controller.Move(destinationPoint);
         }
         else
         {
@@ -31,11 +34,10 @@ public class TeamController : MonoBehaviour
             points.Clear();
             for (int i = 0; i < _size; i++)
             {
-                var dest = new Vector3(destination.x + destinationRadius * Mathf.Cos(_angle * i * Mathf.PI/180), destination.y, destination.z + destinationRadius * Mathf.Sin(_angle * i * Mathf.PI/180));
-                points.Add(dest);
-                teamManagement.selectedUnits[i].controller.Move(dest);
+                destinationPoint = new Vector3(destination.x + destinationRadius * Mathf.Cos(_angle * i * Mathf.PI/180), destination.y, destination.z + destinationRadius * Mathf.Sin(_angle * i * Mathf.PI/180));
+                points.Add(destinationPoint);
+                teamManagement.selectedUnits[i].controller.Move(destinationPoint);
             }
-            //Visualize destination points
         }
     }
 
@@ -46,7 +48,7 @@ public class TeamController : MonoBehaviour
         {
             if (!selectedUnit.model.isCrouching)
             {
-                selectedUnit.controller.Crouch();
+                selectedUnit.controller.toCrouch.Start();
                 isAllCrouching = false;
             }
         }
@@ -55,7 +57,7 @@ public class TeamController : MonoBehaviour
         {
             foreach (var selectedUnit in teamManagement.selectedUnits)
             {
-                selectedUnit.controller.StandUp();
+                selectedUnit.controller.toStandUp.Start();
             }
         }
     }
@@ -72,13 +74,8 @@ public class TeamController : MonoBehaviour
     {
         foreach (var selectedUnit in teamManagement.selectedUnits)
         {
-            if(selectedUnit.model.isCrouching) selectedUnit.controller.StandUp();
+            if(selectedUnit.model.isCrouching) selectedUnit.controller.toStandUp.Start();
             selectedUnit.model.isRunning = true;
         }
-    }
-
-    public void EnableSkill(int index)
-    {
-        teamManagement.selectedUnits[0].controller.SetReadySkill(index);
     }
 }

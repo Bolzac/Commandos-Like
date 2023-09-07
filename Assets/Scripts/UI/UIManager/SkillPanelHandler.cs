@@ -5,30 +5,22 @@ using UnityEngine;
 public class SkillPanelHandler
 {
     public GameObject skillsPanel;
-    public Transform skillBar;
 
-    public void SetSkills(Member newSelected)
+    public Transform skills;
+    public Transform inventory;
+
+    public void AddItemToInventory()
     {
-        for (var i = 0; i < newSelected.model.info.skills.Length; i++)
-        {
-            var child = skillBar.GetChild(i);
-            child.GetComponent<UISkill>().SetSkillBlock(newSelected.model.info.skills[i]);
-        }
-
-        for (var i = newSelected.model.info.skills.Length; i < skillBar.childCount; i++)
-        {
-            var child = skillBar.GetChild(i);
-            child.GetComponent<UISkill>().ClearSkillBlock();
-        }
+        
     }
 
     public void ShowPanel()
     {
-        skillsPanel.SetActive(true);
+        //skillsPanel.SetActive(true);
     }
 
     public void HidePanel()
     {
-        skillsPanel.SetActive(false);
+        //skillsPanel.SetActive(false);
     }
 }

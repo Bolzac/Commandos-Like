@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class InputVariables : MonoBehaviour
+[CreateAssetMenu(menuName = "Input Variables")]
+public class InputVariables : ScriptableObject
 {
     public Vector2 mouseDelta;
     public Vector2 zoomDelta;
@@ -11,7 +13,12 @@ public class InputVariables : MonoBehaviour
 
     public bool isPaused;
 
-    public UnityEvent onCrouchEvent;
-    public UnityEvent onDoubleClick;
-    public UnityEvent onOneClick;
+    public void ResetVariables()
+    {
+        mouseDelta = Vector2.zero;
+        zoomDelta = Vector2.zero;
+        drag = false;
+        turn = false;
+        isPaused = false;
+    }
 }

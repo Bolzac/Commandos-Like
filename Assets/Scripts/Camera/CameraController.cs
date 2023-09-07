@@ -12,7 +12,8 @@ public class CameraController : MonoBehaviour
     public InputVariables inputModel;
     
     [Header("Camera Properties")]
-    public CinemachineVirtualCamera virtualCamera;
+    public CinemachineVirtualCamera isometricCam;
+    public CinemachineVirtualCamera dialogueCam;
 
     [Header("Camera Methods")] 
     [SerializeField] private ZoomCamera zoomCamera;
@@ -24,10 +25,13 @@ public class CameraController : MonoBehaviour
     private float elapsedTime;
     private Coroutine _coroutine;
 
+    [Header("Dialogue Properties")]
+    [SerializeField] private Vector3 offset;
+
     public void HandleCameraLocomotion()
     {
         moveCamera.MoveCam(inputModel,transform);
-        zoomCamera.Zoom(inputModel,virtualCamera);
+        zoomCamera.Zoom(inputModel,isometricCam);
         turnCamera.TurnCam(inputModel,transform);
     }
 
@@ -35,6 +39,11 @@ public class CameraController : MonoBehaviour
     {
        if(_coroutine == null) StartCoroutine(FocusOnMember(index));
        else StopCoroutine(_coroutine);
+    }
+
+    public void FocusOnDialogue()
+    {
+        dialogueCam.transform.position = TeamManagement.Instance.selectedUnits[0].transform.position + offset;
     }
 
     private IEnumerator FocusOnMember(int index)

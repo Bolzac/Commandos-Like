@@ -15,6 +15,7 @@ public class Enemy : Interactable, IDataPersistence
     protected override void Awake()
     {
         base.Awake();
+        hoverState = HoverState.Enemy;
         animationHandler = transform.GetChild(0).GetComponent<AnimationHandler>();
         agent = GetComponent<NavMeshAgent>();
         model = GetComponent<EnemyModel>();

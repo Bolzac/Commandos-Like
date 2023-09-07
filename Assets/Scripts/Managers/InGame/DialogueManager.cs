@@ -27,6 +27,14 @@ public class DialogueManager : MonoBehaviour
     private const string SPEAKER_TAG = "speaker";
     private const string PORTRAIT_TAG = "portrait";
 
+    private void Awake()
+    {
+        foreach (var npcBase in FindObjectsOfType<NPCBase>())
+        {
+            npcBase.OnDialogue += StartDialogue;
+        }
+    }
+
     private void Start()
     {
         currentChoices = new List<Choice>();

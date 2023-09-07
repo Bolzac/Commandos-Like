@@ -4,10 +4,10 @@ using UnityEngine.Serialization;
 public class MemberModel : MonoBehaviour, IDataPersistence
 {
     public MemberInfo info;
-    public SkillBase readySkill;
 
     public bool isRunning;
     public bool isCrouching;
+    public bool isSkillEnable;
     public GameObject selectedVisual;
 
     #region SaveAndLoad

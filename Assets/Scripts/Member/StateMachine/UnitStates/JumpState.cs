@@ -13,6 +13,7 @@ public class JumpState : State<Member>
     public override void Enter()
     {
         base.Enter();
+        Runner.agentLinkMover.method = OffMeshLinkMoveMethod.Parabola;
         Runner.animationHandler.PlayTargetAnim(jumpAnimation,0.25f);
     }
 

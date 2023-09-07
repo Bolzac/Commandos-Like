@@ -10,6 +10,7 @@ public class PlayState : InGameBaseState
     public override void Enter()
     {
         Time.timeScale = 1;
+        runner.inputManager.inputModel.ResetVariables();
         runner.uiManager.StartPlayUI();
         runner.inputManager.EnablePlay();
         runner.animator.Play("IsometricFreeCamera");
@@ -18,7 +19,7 @@ public class PlayState : InGameBaseState
     public override void Update()
     {
         if(GameManager.Instance.isOverUI) return; 
-        runner.selectionManager.ObserveMouseBehaviour();
+        if(!TeamManagement.Instance.selectedUnits[0].model.isSkillEnable) runner.selectionManager.ObserveMouseBehaviour();
         onUpdatePlayState.Invoke();
     }
 

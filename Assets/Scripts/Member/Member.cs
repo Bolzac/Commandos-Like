@@ -1,9 +1,9 @@
+using UnityEngine;
 using UnityEngine.AI;
 
 public class Member : SelectableMember
 {
-    public TeamManagement teamManagement;
-    public int index;
+    [HideInInspector] public int index;
     public UnitStateManager stateManager;
     public NavMeshAgent agent;
     public AgentLinkMover agentLinkMover;
@@ -11,16 +11,18 @@ public class Member : SelectableMember
     public MemberModel model;
     public MemberController controller;
 
+    public CommandManager commandManager; 
+
     protected override void Awake()
     {
         base.Awake();
         agentLinkMover = GetComponent<AgentLinkMover>();
         model = GetComponent<MemberModel>();
-        teamManagement = transform.parent.GetComponent<TeamManagement>();
+        commandManager = GetComponent<CommandManager>();
     }
 
     public override void Select()
     {
-        teamManagement.SelectOneUnit(index);
+        TeamManagement.Instance.SelectOneUnit(index);
     }
 }

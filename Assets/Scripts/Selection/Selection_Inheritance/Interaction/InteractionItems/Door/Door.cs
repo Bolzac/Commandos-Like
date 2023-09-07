@@ -22,7 +22,7 @@ public class Door : Interactable, IDataPersistence
     protected override void Awake()
     {
         base.Awake();
-        anim = transform.parent.GetComponent<Animation>();
+        anim = transform.GetChild(0).GetComponent<Animation>();
     }
 
     public override void Interaction(Member member)

@@ -1,21 +1,34 @@
+using System.Collections;
 using UnityEngine;
-public abstract class SkillBase : ScriptableObject
+public class SkillBase : ScriptableObject
 {
     [Header("Skill Introduction")]
     public string skillName;
     [TextArea] public string skillDescription;
     public Sprite skillSprite;
 
-    [Header("Skill Properties")]
+    [Header("Skill Properties")] 
     public float cooldown;
-    
-    public virtual void ReadySkill()
+    public float cooldownTimer;
+    public float rangeDistance;
+    public float noiseDistance;
+
+    [Header("Trigger")]
+    public KeyCode key;
+
+    public virtual void ActivateSkill()
     {
-        Debug.Log("ready skill");
+        Debug.Log("Skill activated");
     }
 
-    public virtual void UseSkill()
+    public IEnumerator StartCooldown()
     {
-        Debug.Log("Use Skill");
+        while (cooldownTimer != 0)
+        {
+            yield return new WaitForSeconds(1);
+            cooldownTimer -= 1;
+        }
+
+        cooldownTimer = cooldown;
     }
 }

@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
+    [SerializeField] private UnityEvent onCrouchEvent;
+    [SerializeField] private UnityEvent onDoubleClick;
+    [SerializeField] private UnityEvent onOneClick;
     [SerializeField] private UnityEvent<Type> onPause;
     [SerializeField] private UnityEvent<Type> onResume;
     
@@ -14,7 +17,6 @@ public class InputManager : MonoBehaviour
     private void Awake()
     {
         _inputs = new PlayerInputs();
-        inputModel = GetComponent<InputVariables>();
     }
 
     private void OnEnable()
@@ -91,15 +93,11 @@ public class InputManager : MonoBehaviour
             _inputs.MemberAction.Disable();
         }
         
-        private void HandleCrouch(InputAction.CallbackContext i) { inputModel.onCrouchEvent.Invoke(); }
+        private void HandleCrouch(InputAction.CallbackContext i) { onCrouchEvent.Invoke(); }
 
-        private void EnableRun(InputAction.CallbackContext i) { inputModel.onDoubleClick.Invoke(); }
+        private void EnableRun(InputAction.CallbackContext i) { onDoubleClick.Invoke(); }
 
-        private void DisableRun(InputAction.CallbackContext i)
-        {
-            inputModel.onOneClick.Invoke();
-            if(TeamManagement.Instance.selectedUnits[0].controller.IsInteracting()) TeamManagement.Instance.selectedUnits[0].controller.StopInteraction(); 
-        }
+        private void DisableRun(InputAction.CallbackContext i) { onOneClick.Invoke(); }
 
     #endregion
 

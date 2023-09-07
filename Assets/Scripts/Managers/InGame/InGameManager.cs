@@ -18,12 +18,12 @@ public class InGameManager : MonoBehaviour
     [SerializeField] private DialogueState dialogueState;
 
     #endregion
-
     #region Managers
     
     public InputManager inputManager;
     public UIManager uiManager;
     public SelectionManager selectionManager;
+    public CameraController cameraController;
 
     #endregion
 

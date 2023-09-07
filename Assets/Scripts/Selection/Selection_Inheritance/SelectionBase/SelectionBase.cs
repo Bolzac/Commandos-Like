@@ -1,9 +1,8 @@
-using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class SelectionBase : MonoBehaviour
 {
+    [HideInInspector] public HoverState hoverState;
     private Outline outline;
     protected bool isClicked;
     
@@ -17,11 +16,13 @@ public class SelectionBase : MonoBehaviour
     private void OnMouseEnter()
     {
         if(!GameManager.Instance.isOverUI) SetOutline(true);
+        CursorManager.Instance.SetCursor(hoverState);
     }
 
     private void OnMouseExit()
     {
         if(!isClicked && !GameManager.Instance.isOverUI) SetOutline(false);
+        CursorManager.Instance.ReturnDefaultCursor();
     }
 
     public void SetOutline(bool enable)
@@ -33,4 +34,12 @@ public class SelectionBase : MonoBehaviour
     {
         isClicked = click;
     }
+}
+
+public enum HoverState
+{
+    Other,
+    Member,
+    Enemy,
+    NPC,
 }
