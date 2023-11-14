@@ -8,7 +8,8 @@ public abstract class Interactable : SelectionBase
     public abstract void Interaction(Member member);
 
     private void OnMouseDown()
-    {
-        if(!isClicked) OnInteract?.Invoke(this);
+    { 
+        if(InGameManager.Instance.currentState.GetType() == typeof(DialogueState)) return;
+        if(!isClicked && !GameManager.Instance.isOverUI) OnInteract?.Invoke(this);
     }
 }

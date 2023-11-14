@@ -23,7 +23,7 @@ public class SaveSlotButton : BaseButton
         {
             noData.SetActive(false);
             hasData.SetActive(true);
-            date.text = "Created at: " + data.createTime.ToString(CultureInfo.InvariantCulture);
+            //date.text = "Created at: " + data.createTime.ToString(CultureInfo.InvariantCulture);
         }
     }
 
@@ -35,9 +35,11 @@ public class SaveSlotButton : BaseButton
     public override void OnSelect(BaseEventData eventData)
     {
         targetButton.interactable = false;
+        /*
         DataPersistenceManager.Instance.ChangeSelectedProfileId(profileId);
         if(hasData.activeSelf) DataPersistenceManager.Instance.LoadGame();
         else DataPersistenceManager.Instance.NewGame();
+        */
         GameManager.Instance.levelManager.LoadScene("Demo");
     }
 }

@@ -8,10 +8,7 @@ public class SelectionManager : MonoBehaviour
 
     public void ObserveMouseBehaviour()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            multipleMemberSelection.SetStartPos(Input.mousePosition);
-        }
+        if (Input.GetMouseButtonDown(0)) multipleMemberSelection.SetStartPos(Input.mousePosition);
 
         if (Input.GetMouseButton(0))
         {
@@ -29,10 +26,7 @@ public class SelectionManager : MonoBehaviour
                 multipleMemberSelection.SetEndPos(Vector2.zero);
                 multipleMemberSelection.DrawVisual();
             }
-            else
-            {
-                destinationSelection.SelectDestination();
-            }
+            else destinationSelection.SelectDestination();
         }
     }
 }

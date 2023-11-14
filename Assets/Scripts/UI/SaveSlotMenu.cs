@@ -11,14 +11,16 @@ public class SaveSlotMenu : MonoBehaviour
         saveSlots = GetComponentsInChildren<SaveSlotButton>();
     }
 
+    /*
     private void OnEnable()
     {
         ActivateMenu();
     }
-
+    
     private void ActivateMenu()
     {
-        Dictionary<string, GameData> profilesGameData = DataPersistenceManager.Instance.GetAllProfilesGameData();
+        
+        Dictionary<string, GameData> profilesGameData = DataPersistenceManager.instance.GetAllProfilesGameData();
 
         foreach (var saveSlot in saveSlots)
         {
@@ -26,4 +28,5 @@ public class SaveSlotMenu : MonoBehaviour
             saveSlot.SetData(profileData);
         }
     }
+    */
 }

@@ -1,67 +1,40 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using File = UnityEngine.Windows.File;
 
 public class FileDataHandler
 {
-    private string dataDirPath;
-    private string dataFileName;
+    private string _dataDirPath = "";
+    private string _dataFileName = "";
+
+    private string dataToStore;
+    private string dataToLoad;
+    private string fullPath;
 
     public FileDataHandler(string dataDirPath, string dataFileName)
     {
-        this.dataDirPath = dataDirPath;
-        this.dataFileName = dataFileName;
+        _dataDirPath = dataDirPath;
+        _dataFileName = dataFileName;
     }
 
-    public Dictionary<string, GameData> LoadAllProfiles()
+    public GameData Load()
     {
-        Dictionary<string, GameData> profileDic = new Dictionary<string, GameData>();
-
-        IEnumerable<DirectoryInfo> dirInfos = new DirectoryInfo(dataDirPath).EnumerateDirectories();
-        
-        foreach (var directoryInfo in dirInfos)
-        {
-            string profileId = directoryInfo.Name;
-
-            string fullPath = Path.Combine(dataDirPath, profileId, dataFileName);
-            if (!File.Exists(fullPath))
-            {
-                Debug.LogWarning("Skipping directory when loading all profiles because it does not contain data : " + profileId);
-                continue;
-            }
-            GameData profileData = Load(profileId);
-            if (profileData != null)
-            {
-                profileDic.Add(profileId,profileData);
-            }
-        }
-        return profileDic;
-    }
-
-    public GameData Load(string profileId)
-    {
-        string fullPath = Path.Combine(dataDirPath,profileId, dataFileName);
+        fullPath = Path.Combine(_dataDirPath, _dataFileName);
         GameData loadedData = null;
         if (File.Exists(fullPath))
         {
             try
             {
-                string dataToLoad = "";
-                using (FileStream stream = new FileStream(fullPath,FileMode.Open))
-                {
-                    using (StreamReader reader = new StreamReader(stream))
-                    {
-                        dataToLoad = reader.ReadToEnd();
-                    }
-                }
-
+                dataToLoad = "";
+                using FileStream stream = new FileStream(fullPath, FileMode.Open);
+                using StreamReader reader = new StreamReader(stream);
+                dataToLoad = reader.ReadToEnd();
                 loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
-
             }
             catch (Exception e)
             {
-                Debug.LogError("Error occured when trying to load data from file: " + fullPath + "\n" + e);
+                Console.WriteLine(e);
                 throw;
             }
         }
@@ -69,25 +42,20 @@ public class FileDataHandler
         return loadedData;
     }
 
-    public void Save(GameData data,string profileId)
+    public void Save(GameData data)
     {
-        string fullPath = Path.Combine(dataDirPath,profileId, dataFileName);
+        fullPath = Path.Combine(_dataDirPath, _dataFileName);
         try
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(fullPath) ?? string.Empty);
-
-            string dataToStore = JsonUtility.ToJson(data, true);
-            using (FileStream stream = new FileStream(fullPath,FileMode.Create))
-            {
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    writer.Write(dataToStore);
-                }
-            }
+            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+            dataToStore = JsonUtility.ToJson(data, true);
+            using FileStream stream = new FileStream(fullPath,FileMode.Create);
+            using StreamWriter writer = new StreamWriter(stream);
+            writer.Write(dataToStore);
         }
         catch (Exception e)
         {
-            Debug.LogError("Error occured when trying to save data to file: " + fullPath + "\n" + e);
+            Console.WriteLine(e);
             throw;
         }
     }

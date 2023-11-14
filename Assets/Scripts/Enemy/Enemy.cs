@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : Interactable, IDataPersistence
+public class Enemy : Interactable
 {
     public Camera cam;
     public AnimationHandler animationHandler;
@@ -31,15 +31,5 @@ public class Enemy : Interactable, IDataPersistence
     public override void Interaction(Member member)
     {
         controller.Die(member);
-    }
-
-    public void LoadData(GameData data)
-    {
-        Debug.LogWarning("Enemy's LoadData method is empty!");
-    }
-
-    public void SaveData(ref GameData data)
-    {
-        Debug.LogWarning("Enemy's SaveData method is empty!");
     }
 }

@@ -10,16 +10,7 @@ public class Member : SelectableMember
     public AnimationHandler animationHandler;
     public MemberModel model;
     public MemberController controller;
-
-    public CommandManager commandManager; 
-
-    protected override void Awake()
-    {
-        base.Awake();
-        agentLinkMover = GetComponent<AgentLinkMover>();
-        model = GetComponent<MemberModel>();
-        commandManager = GetComponent<CommandManager>();
-    }
+    public CommandManager commandManager;
 
     public override void Select()
     {

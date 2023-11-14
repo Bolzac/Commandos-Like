@@ -371,6 +371,37 @@ Transform:
   m_Father: {fileID: 539502598332874774}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1033979738222167306
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3026513655192581486}
+  m_Layer: 7
+  m_Name: DialogueCamPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3026513655192581486
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033979738222167306}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8501874041100757788}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1078941884248022657
 GameObject:
   m_ObjectHideFlags: 0
@@ -3549,6 +3580,7 @@ GameObject:
   - component: {fileID: 4492686709899969277}
   - component: {fileID: 339573155395359563}
   - component: {fileID: 7808417073857920471}
+  - component: {fileID: 2620438428292515796}
   m_Layer: 7
   m_Name: Corvo
   m_TagString: Unit
@@ -3571,6 +3603,7 @@ Transform:
   - {fileID: 6815707054439686369}
   - {fileID: 6012477329763725196}
   - {fileID: 8854918781316979150}
+  - {fileID: 3026513655192581486}
   - {fileID: 421233771024324890}
   m_Father: {fileID: 0}
   m_RootOrder: -1
@@ -3587,15 +3620,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d729347d524d1440b9481e3065ede79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorIcon: {fileID: 2800000, guid: 42ec8a0e710138343a271d732299cfb6, type: 3}
-  teamManagement: {fileID: 0}
+  hoverState: 0
+  outline: {fileID: 0}
   index: 0
   stateManager: {fileID: 6644926475431166396}
   agent: {fileID: 1918487283011327674}
-  agentLinkMover: {fileID: 0}
+  agentLinkMover: {fileID: 339573155395359563}
   animationHandler: {fileID: 2161700328318374983}
-  model: {fileID: 0}
+  model: {fileID: 4492686709899969277}
   controller: {fileID: 4995131104766427270}
+  commandManager: {fileID: 2620438428292515796}
 --- !u!195 &1918487283011327674
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3605,7 +3639,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 9196022678148958569}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.3
+  m_Radius: 0.1
   m_Speed: 1.6
   m_Acceleration: 24
   avoidancePriority: 50
@@ -3701,6 +3735,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 13072d7d03729ac41b6f6c15a04a6c43, type: 2}
   - {fileID: 11400000, guid: 420e6f0b699ffdb4891439ecddda5fb8, type: 2}
   - {fileID: 11400000, guid: 5cc5e757e1390524c9445b444708dbfc, type: 2}
+  - {fileID: 11400000, guid: 9e8e1afd40767c04192c83392bd24c8b, type: 2}
   currentState: {fileID: 0}
   previousState: {fileID: 0}
 --- !u!114 &4492686709899969277
@@ -3720,6 +3755,7 @@ MonoBehaviour:
   isCrouching: 0
   isSkillEnable: 0
   selectedVisual: {fileID: 118712427168294818}
+  follow: {fileID: 3026513655192581486}
 --- !u!114 &339573155395359563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3758,3 +3794,16 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &2620438428292515796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9196022678148958569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13975bb5ccd14747b70d9530e910bb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  member: {fileID: 7604543887427666272}

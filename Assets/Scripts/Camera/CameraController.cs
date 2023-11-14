@@ -41,9 +41,9 @@ public class CameraController : MonoBehaviour
        else StopCoroutine(_coroutine);
     }
 
-    public void FocusOnDialogue()
+    public void FocusOnDialogue(Transform follow)
     {
-        dialogueCam.transform.position = TeamManagement.Instance.selectedUnits[0].transform.position + offset;
+        dialogueCam.Follow = follow;
     }
 
     private IEnumerator FocusOnMember(int index)

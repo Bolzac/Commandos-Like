@@ -9,6 +9,11 @@ public class EnemyController : MonoBehaviour
         enemy = GetComponent<Enemy>();
     }
 
+    public void Attack()
+    {
+
+    }
+
     public void ReactSound(Transform tr)
     {
         if(enemy.model.didSeeEnemy || enemy.model.canSeeEnemy) return;

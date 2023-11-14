@@ -16,9 +16,4 @@ public abstract class NPCBase : Interactable
     {
         OnDialogue?.Invoke(npc.dialogue,member);
     }
-
-    protected void LookAtMember()
-    {
-        
-    }
 }

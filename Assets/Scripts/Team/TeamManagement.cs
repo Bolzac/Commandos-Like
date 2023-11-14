@@ -13,10 +13,6 @@ public class TeamManagement : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-
-    private void Start()
-    {
         members = transform.GetComponentsInChildren<Member>();
 
         foreach (Member mem in members)

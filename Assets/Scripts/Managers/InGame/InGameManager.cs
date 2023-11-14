@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class InGameManager : MonoBehaviour
 {
+    public static InGameManager Instance;
+    
     #region Core Game Objects
     
     //Tüm oynanabilir bölümlerdeki elemanlar
@@ -15,8 +17,9 @@ public class InGameManager : MonoBehaviour
     
     [SerializeField] private PlayState playState;
     [SerializeField] private PauseState pauseState;
-    [SerializeField] private DialogueState dialogueState;
+    //[SerializeField] private DialogueState dialogueState;
 
+    public DialogueState dialogueState;
     #endregion
     #region Managers
     
@@ -24,31 +27,31 @@ public class InGameManager : MonoBehaviour
     public UIManager uiManager;
     public SelectionManager selectionManager;
     public CameraController cameraController;
+    public DialogueManager dialogueManager;
 
     #endregion
 
     public Animator animator;
     
     private Dictionary<Type, InGameBaseState> _statesByTypes = new Dictionary<Type, InGameBaseState>();
-    private InGameBaseState _currentState;
-    private InGameBaseState _previousState;
+    public InGameBaseState currentState;
 
     private void Awake()
     {
+        Instance = this;
         Init();
     }
 
     private void Update()
     {
-        _currentState.Update();
+        currentState.Update();
     }
 
     public void SetState(Type type)
     {
-        _currentState?.Exit();
-        _previousState = _currentState;
-        _currentState = _statesByTypes[type];
-        _currentState.Enter();
+        currentState?.Exit();
+        currentState = _statesByTypes[type];
+        currentState.Enter();
     }
 
     private void InitStates()
@@ -75,6 +78,7 @@ public class InGameManager : MonoBehaviour
         inputManager = transform.GetComponentInChildren<InputManager>();
         uiManager = transform.GetComponentInChildren<UIManager>();
         selectionManager = transform.GetComponentInChildren<SelectionManager>();
+        dialogueManager = transform.GetComponentInChildren<DialogueManager>();
     }
     
     private void InitCoreObjects()

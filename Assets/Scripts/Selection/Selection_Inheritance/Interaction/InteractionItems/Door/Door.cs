@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Door : Interactable, IDataPersistence
+public class Door : Interactable
 {
     [SerializeField] private string id;
 
@@ -35,20 +35,5 @@ public class Door : Interactable, IDataPersistence
         if(isLocked) return;
         anim.CrossFade(isOpen ? doorClosingAnim : doorOpeningAnim, 0.25f);
         isOpen = !isOpen;
-    }
-
-    public void LoadData(GameData data)
-    {
-        data.interactions.TryGetValue(id, out isOpen);
-        anim.CrossFade(!isOpen ? doorClosingAnim : doorOpeningAnim, 0);
-    }
-
-    public void SaveData(ref GameData data)
-    {
-        if (data.interactions.ContainsKey(id))
-        {
-            data.interactions.Remove(id);
-        }
-        data.interactions.Add(id,isOpen);
     }
 }

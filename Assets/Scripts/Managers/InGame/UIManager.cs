@@ -32,10 +32,6 @@ public class UIManager : MonoBehaviour
         characterPanelHandler.HidePanel();
     }
 
-    public void EnableMultipleSelectionUI(Vector2 a, Vector2 b) { selectionBoxHandler.CreateSelectionBox(a,b); }
-
-    public void DisableMultipleSelectionUI() { selectionBoxHandler.DisableSelectionBox(); }
-
     public void StartPauseUI() { pausePanelHandler.ShowPanel(); }
 
     public void ExitPauseUI() { pausePanelHandler.HidePanel(); }

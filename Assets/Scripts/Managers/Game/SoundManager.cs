@@ -1,19 +1,20 @@
 using System;
 using UnityEngine;
+using FMODUnity;
 
 [Serializable]
 public class SoundManager : MonoBehaviour
 {
-    [SerializeField] private AudioSource musicSource, effectSource;
-    [SerializeField] private float minMasterVolume, maxMasterVolume;
+    public static SoundManager Instance { get; private set; }
 
-    public void PlaySound(AudioClip clip)
+    private void Awake()
     {
-        effectSource.PlayOneShot(clip);
+        if (Instance != null) Debug.LogError("Found more than one sound manager");
+        Instance = this;
     }
 
-    public void ChangeMasterVolume(float value)
+    public void PlayOneShot(EventReference sound, Vector3 worldPos)
     {
-        AudioListener.volume = Mathf.Clamp(value,minMasterVolume,maxMasterVolume);
+        RuntimeManager.PlayOneShot(sound,worldPos);
     }
 }

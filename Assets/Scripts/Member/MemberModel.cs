@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class MemberModel : MonoBehaviour, IDataPersistence
+public class MemberModel : MonoBehaviour
 {
     public MemberInfo info;
 
@@ -9,24 +9,5 @@ public class MemberModel : MonoBehaviour, IDataPersistence
     public bool isCrouching;
     public bool isSkillEnable;
     public GameObject selectedVisual;
-
-    #region SaveAndLoad
-
-    public void LoadData(GameData data)
-    {
-        data.memberPositions.TryGetValue(info.id, out Vector3 position);
-        transform.localPosition = position;
-        data.memberState.TryGetValue(info.id, out isCrouching);
-    }
-
-    public void SaveData(ref GameData data)
-    {
-        if (data.memberPositions.ContainsKey(info.id)) data.memberPositions.Remove(info.id);
-        data.memberPositions.Add(info.id,transform.localPosition);
-        
-        if (data.memberState.ContainsKey(info.id)) data.memberState.Remove(info.id);
-        data.memberState.Add(info.id,isCrouching);
-    }
-
-    #endregion
+    public Transform follow;
 }

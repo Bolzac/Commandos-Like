@@ -1,28 +1,23 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Ink.Runtime;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    [SerializeField] private UnityEvent<Type> onEnteringDialogue;
-    [SerializeField] private UnityEvent<Type> onEndingDialogue;
-
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI sentenceText;
     [SerializeField] private Animator portraitAnimator;
-    [SerializeField] private GameObject[] choices;
+    public GameObject[] choices;
     [SerializeField] private Image unitSprite;
 
     private TextMeshProUGUI[] choicesText;
-    private Story currentStory;
+    public Story currentStory;
     private List<Choice> currentChoices;
-    private Member _speakerMember;
+    public Member speakerMember;
 
     private const string SPEAKER_TAG = "speaker";
     private const string PORTRAIT_TAG = "portrait";
@@ -33,10 +28,7 @@ public class DialogueManager : MonoBehaviour
         {
             npcBase.OnDialogue += StartDialogue;
         }
-    }
-
-    private void Start()
-    {
+        
         currentChoices = new List<Choice>();
         choicesText = new TextMeshProUGUI[choices.Length];
         for (var i = 0; i < choices.Length; i++)
@@ -47,12 +39,13 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(TextAsset dialogue, Member member)
     {
-        onEnteringDialogue.Invoke(typeof(DialogueState));
+        InGameManager.Instance.cameraController.FocusOnDialogue(member.model.follow);
+        InGameManager.Instance.SetState(typeof(DialogueState));
         TeamManagement.Instance.SelectOneUnit(member.index);
 
-        _speakerMember = member;
-        unitSprite.sprite = _speakerMember.model.info.portrait;
-        
+        speakerMember = member;
+        unitSprite.sprite = speakerMember.model.info.portrait;
+
         currentStory = new Story(dialogue.text);
 
         DisplayNextSentence();
@@ -140,7 +133,7 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator EndDialogue()
     {
-        onEndingDialogue.Invoke(typeof(PlayState));
+        InGameManager.Instance.SetState(typeof(PlayState));
         sentenceText.text = "";
         yield return new WaitForSeconds(0.1f);
     }

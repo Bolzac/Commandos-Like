@@ -3,7 +3,7 @@ using UnityEngine;
 public class SelectionBase : MonoBehaviour
 {
     [HideInInspector] public HoverState hoverState;
-    private Outline outline;
+    public Outline outline;
     protected bool isClicked;
     
     protected virtual void Awake()
@@ -15,12 +15,14 @@ public class SelectionBase : MonoBehaviour
 
     private void OnMouseEnter()
     {
+        if(InGameManager.Instance.currentState.GetType() == typeof(DialogueState)) return;
         if(!GameManager.Instance.isOverUI) SetOutline(true);
         CursorManager.Instance.SetCursor(hoverState);
     }
 
     private void OnMouseExit()
     {
+        if(InGameManager.Instance.currentState.GetType() == typeof(DialogueState)) return;
         if(!isClicked && !GameManager.Instance.isOverUI) SetOutline(false);
         CursorManager.Instance.ReturnDefaultCursor();
     }
